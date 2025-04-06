@@ -5,17 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "organizacion")
+public class Organizacion {
 
-public class Usuario {
+    //Variables de la clase
 
-    // Variables de la clase
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -25,8 +22,8 @@ public class Usuario {
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "apellido")
-    private String apellido;
+    @Column(name = "descripcion", columnDefinition = "TEXT")
+    private String descripcion;
 
     @Column(name = "telefono", length = 20)
     private String telefono;
@@ -37,17 +34,12 @@ public class Usuario {
     @Column(name = "direccion")
     private String direccion;
 
-    @OneToOne
-    @JoinColumn(name = "organizacion", referencedColumnName = "id")
-    Organizacion organizacion;
-
     // Constructor por defecto
 
-    public Usuario() {
-    }
+    public Organizacion() { }
 
     // Métodos Getter y Setter
-
+   
     public int getId() {
         return this.id;
     }
@@ -64,12 +56,12 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getApelSlido() {
-        return this.apellido;
+    public String getDescripcion() {
+        return this.descripcion;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getTelefono() {
@@ -94,14 +86,6 @@ public class Usuario {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }
-
-    public Organizacion getOrganizacion() {
-        return this.organizacion;
-    }
-
-    public void setOrganizacion(Organizacion organizacion) {
-        this.organizacion = organizacion;
     }
 
 }
