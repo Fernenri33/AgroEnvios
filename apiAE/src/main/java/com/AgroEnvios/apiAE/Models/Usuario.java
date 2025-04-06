@@ -1,11 +1,16 @@
 package com.AgroEnvios.apiAE.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -39,7 +44,10 @@ public class Usuario {
 
     @OneToOne
     @JoinColumn(name = "organizacion", referencedColumnName = "id")
-    Organizacion organizacion;
+    private Organizacion organizacion;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<UsuarioRol> roles = new ArrayList<>();
 
     // Constructor por defecto
 
@@ -102,6 +110,19 @@ public class Usuario {
 
     public void setOrganizacion(Organizacion organizacion) {
         this.organizacion = organizacion;
+    }
+
+    public String getApellido() {
+        return this.apellido;
+    }
+
+
+    public List<UsuarioRol> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(List<UsuarioRol> roles) {
+        this.roles = roles;
     }
 
 }

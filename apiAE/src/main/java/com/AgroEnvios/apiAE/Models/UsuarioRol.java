@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,9 +21,13 @@ public class UsuarioRol {
     @Column(name = "id")
     private int id;
 
-    @OneToOne
-    @JoinColumn(name = "usuario", referencedColumnName = "id")
-    Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "usuario", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "rol", nullable = false)
+    private Rol rol;
 
     // Constructor por defecto
 
@@ -46,6 +50,14 @@ public class UsuarioRol {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Rol getRol() {
+        return this.rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
 }
