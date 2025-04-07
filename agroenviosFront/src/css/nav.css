@@ -1,0 +1,17 @@
+body {
+    font-family: "Gotham", sans-serif;
+    background: #f0f0f0; /* Cambia a un gris claro para probar */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .menu-backdrop {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.1); /* Fondo oscuro con opacidad */
+    border-radius: 6px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    transition: all 0.3s ease-in-out; /* Transición suave */
+    pointer-events: none; /* Evita interferencias con el mouse */
+    z-index: 10; /* Asegúrate de que esté por encima del fondo */
+  }
