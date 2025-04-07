@@ -70,6 +70,8 @@ public class Envio {
     public Envio() {
     }
 
+    // Getters y Setters
+
     public int getId() {
         return this.id;
     }

@@ -1,4 +1,4 @@
-package com.AgroEnvios.apiAE.config;
+package com.AgroEnvios.apiAE.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
