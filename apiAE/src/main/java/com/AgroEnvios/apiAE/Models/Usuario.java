@@ -42,6 +42,9 @@ public class Usuario {
     @Column(name = "direccion")
     private String direccion;
 
+    @Column(name = "password")
+    private String password;
+
     @OneToOne
     @JoinColumn(name = "organizacion", referencedColumnName = "id")
     private Organizacion organizacion;
@@ -123,6 +126,14 @@ public class Usuario {
 
     public void setRoles(List<UsuarioRol> roles) {
         this.roles = roles;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }
