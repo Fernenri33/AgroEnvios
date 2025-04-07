@@ -1,6 +1,9 @@
 <script>
-    // Puedes agregar lógica aquí si es necesario
+    import Account from '../../components/Account.svelte';
+    
+    
 </script>
 
-<h1>Hello, this is the Account Page!</h1>
-<p>Welcome to your account page.</p>
+<Account />
+
+

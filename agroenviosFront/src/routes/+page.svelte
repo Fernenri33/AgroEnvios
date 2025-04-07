@@ -1,4 +1,5 @@
 <script>
+    
     import Footer from '../components/Footer.svelte';
     import Hero from '../components/Hero.svelte';
     import Navbar from '../components/Navbar.svelte';
@@ -8,6 +9,8 @@
     <title>Mi Página de Inicio</title>
     <meta name="description" content="Bienvenido a la página construida con Svelte y Tailwind CSS." />
   </svelte:head>
+
+  
   
   <Navbar />
   
@@ -23,9 +26,7 @@
       Ver más
     </a>
 
-    <nav>
-      <a href="/account">Go to Account Page</a>
-  </nav>
+   
   </main>
 
   
