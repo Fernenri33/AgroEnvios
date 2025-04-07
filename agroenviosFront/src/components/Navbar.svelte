@@ -32,7 +32,7 @@
           <div class="hidden md:flex">
               <ul class="menu-list flex gap-6 text-lg font-medium">
                   <li><a href="#" class="text-black hover:text-red-400">Shop</a></li>
-                  <li><a href="#"  class="text-black hover:text-red-400">Account</a></li>
+                  <li><a href="#"   class="text-black hover:text-red-400">Account</a></li>
                   <li><a href="#" class="text-black hover:text-red-400">Menu</a></li>
               </ul>
           </div>

@@ -1,7 +1,7 @@
 <script>
-    import Navbar from '../components/Navbar.svelte';
-    import Hero from '../components/Hero.svelte';
     import Footer from '../components/Footer.svelte';
+    import Hero from '../components/Hero.svelte';
+    import Navbar from '../components/Navbar.svelte';
   </script>
   
   <svelte:head>
@@ -18,10 +18,16 @@
     <p class="text-gray-700 mb-4">
       Aprende a construir aplicaciones modernas, rápidas y elegantes usando Svelte.
     </p>
+    
     <a href="#mas-info" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
       Ver más
     </a>
+
+    <nav>
+      <a href="/account">Go to Account Page</a>
+  </nav>
   </main>
+
   
   <section id="mas-info" class="bg-gray-100 py-16">
     <div class="container mx-auto text-center">
