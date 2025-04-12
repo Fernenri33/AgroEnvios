@@ -75,10 +75,6 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getApelSlido() {
-        return this.apellido;
-    }
-
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
