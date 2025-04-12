@@ -19,7 +19,7 @@
         }
     </style>
 </head>
-  <nav class="relative w-full  bg-green-300 p-4 shadow-md">
+  <nav class="relative w-full  bg-green-200 p-4 shadow-md">
       <div class="container mx-auto max-w-[90%] flex items-center justify-between py-3 relative z-10" style="margin-left: 65px; ">
           <!-- Logo -->
           <div>
@@ -31,9 +31,11 @@
           <!-- Menú derecho -->
           <div class="hidden md:flex">
               <ul class="menu-list flex gap-6 text-lg font-medium">
-                  <li><a href="#" class="text-black hover:text-red-400">Shop</a></li>
-                  <li><a href="/account"   class="text-black hover:text-red-400">Account</a></li>
-                  <li><a href="#" class="text-black hover:text-red-400">Menu</a></li>
+                  <li><a href="/" class="text-black hover:text-red-400">Inicio</a></li>
+                  <li><a href="#" class="text-black hover:text-red-400">Servicio</a></li>
+                  <li><a href="#" class="text-black hover:text-red-400">Sobre Nosotros</a></li>
+                  <li><a href="#" class="text-black hover:text-red-400">Contacto</a></li>
+                  <li><a href="/account"   class="text-black hover:text-red-400">Login</a></li>
               </ul>
           </div>
       </div>
