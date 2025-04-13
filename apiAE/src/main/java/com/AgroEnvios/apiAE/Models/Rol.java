@@ -3,6 +3,8 @@ package com.AgroEnvios.apiAE.Models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +33,7 @@ public class Rol {
     private String descripcion;
 
     @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<UsuarioRol> usuarios = new ArrayList<>();
 
     // Constructor por defecto
