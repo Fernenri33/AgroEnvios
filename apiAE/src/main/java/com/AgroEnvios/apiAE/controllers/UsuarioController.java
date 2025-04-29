@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.AgroEnvios.apiAE.Models.Usuario;
+import com.AgroEnvios.apiAE.Security.JwtUtil;
 import com.AgroEnvios.apiAE.Services.UsuarioService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -27,6 +29,10 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+private JwtUtil jwtUtil;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest auth) {
@@ -63,6 +69,28 @@ public class UsuarioController {
             .map(usuario -> ResponseEntity.ok(usuario))
             .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Usuario()));
     }
+
+    @GetMapping("/rol")
+public ResponseEntity<?> getRolFromToken(HttpServletRequest request) {
+    try {
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("error", "Token no proporcionado o mal formado"));
+        }
+
+        String token = authHeader.substring(7); // Remove "Bearer "
+        String rol = jwtUtil.extractRol(token); // Método personalizado que tú defines
+
+        return ResponseEntity.ok(Collections.singletonMap("rol", rol));
+
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Collections.singletonMap("error", "Token inválido o expirado"));
+    }
+}
+
 }
     
 class AuthRequest {

@@ -33,6 +33,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/crearUsuario").permitAll()
                         .requestMatchers("/api/todosLosUsuarios").permitAll()
                         .requestMatchers("/api/usuario/{id}").permitAll()
+                        .requestMatchers("/api/rol").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

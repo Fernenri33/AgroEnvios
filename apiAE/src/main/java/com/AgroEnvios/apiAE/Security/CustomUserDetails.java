@@ -1,6 +1,7 @@
 package com.AgroEnvios.apiAE.Security;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -19,10 +20,14 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (usuario.getRoles() == null) return List.of();
+        
         return usuario.getRoles().stream()
-            .map(usuarioRol -> new SimpleGrantedAuthority(usuarioRol.getRol().getNombre()))
+            .filter(ur -> ur.getRol() != null)
+            .map(ur -> new SimpleGrantedAuthority(ur.getRol().getNombre()))
             .collect(Collectors.toList());
     }
+    
 
     @Override
     public String getPassword() {

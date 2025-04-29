@@ -1,7 +1,5 @@
 package com.AgroEnvios.apiAE.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,12 +19,10 @@ public class UsuarioRol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Column(name = "id")
-    @JsonIgnore
     private int id;
 
     @ManyToOne
     @JoinColumn(name = "usuario", nullable = false)
-    @JsonIgnore
     private Usuario usuario;
 
     @ManyToOne
