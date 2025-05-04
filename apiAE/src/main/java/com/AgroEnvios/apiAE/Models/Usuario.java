@@ -1,19 +1,20 @@
 package com.AgroEnvios.apiAE.Models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -51,9 +52,13 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "organizacion", referencedColumnName = "id")
     private Organizacion organizacion;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<UsuarioRol> roles = new ArrayList<>();
+@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "usuario_rol",
+        joinColumns = @JoinColumn(name = "usuario"),
+        inverseJoinColumns = @JoinColumn(name = "rol")
+    )
+    private Set<Rol> roles = new HashSet<>();
 
     // Constructor por defecto
 
@@ -119,11 +124,11 @@ public class Usuario {
     }
 
 
-    public List<UsuarioRol> getRoles() {
+    public Set<Rol> getRoles() {
         return this.roles;
     }
 
-    public void setRoles(List<UsuarioRol> roles) {
+    public void setRoles(Set<Rol> roles) {
         this.roles = roles;
     }
 
