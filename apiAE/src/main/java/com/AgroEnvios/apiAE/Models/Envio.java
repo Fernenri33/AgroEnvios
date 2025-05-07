@@ -9,8 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class Envio {
     @Column(name = "id")
     private int id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "supervisor", referencedColumnName = "id")
     private Usuario supervisor;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "proveedor", referencedColumnName = "id")
     private Usuario proveedor;
 
@@ -57,7 +57,7 @@ public class Envio {
     private LocalDateTime fechaEntrega;
 
     @Enumerated(EnumType.STRING) // Guarda el nombre del enum (Kilo, Libra, etc.)
-    @Column(name = "unidad_medida", nullable = false)
+    @Column(name = "estado", nullable = false)
     private Estado estado;
 
     // Relación con EnvioDetalle

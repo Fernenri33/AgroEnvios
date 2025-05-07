@@ -25,7 +25,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 👈 habilitar CORS aquí
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/hola").permitAll()
@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/todosLosUsuarios").permitAll()
                         .requestMatchers("/api/usuario/{id}").permitAll()
                         .requestMatchers("/api/test/verifica").permitAll()
+                        .requestMatchers("/api/getTodosLosEnvios").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

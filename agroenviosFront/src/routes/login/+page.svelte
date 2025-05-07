@@ -35,7 +35,7 @@
 
         // Éxito: guardar token y redirigir
         document.cookie = `token=${data.token}; path=/; max-age=86400`;
-        goto('/dashboard');
+        goto('/envios');
 
     } catch (err) {
         error = err.message || 'Ocurrió un error inesperado';
