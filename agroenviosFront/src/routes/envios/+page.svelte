@@ -1,55 +1,19 @@
 <script>
     import { onMount } from 'svelte';
-    import { goto } from '$app/navigation'; // Asegúrate de importar `goto` si no lo has hecho
+    import { checkAuthentication, fetchEnvios } from '$lib/envios';
 
     let envios = [];
     let error = null;
     let mensaje = '';
-
-    // Función para obtener el valor de una cookie
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null; // Devuelve null si la cookie no existe
-    }
-
-    // Función para verificar si el usuario está autenticado
-    function checkAuthentication() {
-        const token = getCookie('token');
-        //console.log('Token obtenido de las cookies:', token); // Depuración
-        const isAuthenticated = !!token; // Si el token existe, el usuario está autenticado
-        if (!isAuthenticated) {
-            goto('/login'); // Redirige al login si no está autenticado
-        }
-        return token; // Devuelve el token para usarlo en la solicitud
-    }
 
     onMount(async () => {
         const token = checkAuthentication(); // Obtén el token desde las cookies
         if (!token) return; // Si no hay token, no continúes
 
         try {
-            const response = await fetch('http://localhost:8080/api/getTodosLosEnvios', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status} ${response.statusText}`);
-            }
-
-            const result = await response.json();
-            //console.log(result); // Verifica la estructura de los datos aquí
-
-            if (result.data) {
-                envios = result.data;
-                mensaje = result.message;
-            } else {
-                throw new Error(result.message || 'Error desconocido');
-            }
+            const result = await fetchEnvios(token); // Llama a la función para obtener los envíos
+            envios = result.envios;
+            mensaje = result.mensaje;
         } catch (err) {
             error = err.message;
         }
@@ -65,7 +29,6 @@
         <p>{mensaje || 'Cargando envíos...'}</p>
     {:else}
         <div>
-            <!-- <p>{mensaje}</p> -->
             <ul>
                 {#each envios as envio}
                     <li>

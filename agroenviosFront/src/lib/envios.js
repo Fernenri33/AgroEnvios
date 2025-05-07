@@ -1,0 +1,44 @@
+import { goto } from '$app/navigation';
+
+// Función para obtener el valor de una cookie
+export function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null; // Devuelve null si la cookie no existe
+}
+
+// Función para verificar si el usuario está autenticado
+export function checkAuthentication() {
+    const token = getCookie('token');
+    const isAuthenticated = !!token; // Si el token existe, el usuario está autenticado
+    if (!isAuthenticated) {
+        goto('/login'); // Redirige al login si no está autenticado
+    }
+    return token; // Devuelve el token para usarlo en la solicitud
+}
+
+// Función para obtener todos los envíos
+export async function fetchEnvios(token) {
+    try {
+        const response = await fetch('http://localhost:8080/api/getTodosLosEnvios', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        if (result.data) {
+            return { envios: result.data, mensaje: result.message };
+        } else {
+            throw new Error(result.message || 'Error desconocido');
+        }
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}

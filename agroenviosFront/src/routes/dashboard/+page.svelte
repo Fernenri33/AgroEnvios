@@ -1,35 +1,14 @@
 <script>
     import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
+    import { checkAuthentication, logout } from '$lib/dashboard';
 
     let token = '';
     let isAuthenticated = false;
 
-    // Función para obtener el valor de una cookie
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    // Función para verificar si el usuario está autenticado
-    function checkAuthentication() {
-        token = getCookie('token');
-        isAuthenticated = !!token; // Si el token existe, el usuario está autenticado
-        if (!isAuthenticated) {
-            goto('/login'); // Redirige al login si no está autenticado
-        }
-    }
-
-    // Función para cerrar sesión
-    function logout() {
-        document.cookie = 'token=; Max-Age=0; path=/'; // Elimina la cookie del token
-        isAuthenticated = false;
-        goto('/login'); // Redirige al login
-    }
-
     onMount(() => {
-        checkAuthentication(); // Verifica la autenticación al cargar la página
+        const auth = checkAuthentication(); // Verifica la autenticación al cargar la página
+        token = auth.token;
+        isAuthenticated = auth.isAuthenticated;
     });
 </script>
 

@@ -1,49 +1,26 @@
 <script>
     import Navbar from '../../components/Navbar.svelte';
     import Footer from '../../components/Footer.svelte';
-    import { goto } from '$app/navigation';
+    import { loginUser } from '$lib/auth'; // Importar la función
     import { onMount } from 'svelte';
-    
-    // Variables para el formulario de inicio de sesión, en caso de que la pagina use otras variables agregarlas
+
     let email = '';
     let password = '';
     let error = '';
     let loading = false;
 
-    async function loginUser() {
-    error = '';
-    loading = true;
+    async function handleLogin() {
+        error = '';
+        loading = true;
 
-    try {
-        const response = await fetch('http://localhost:8080/api/login', {
-            // En el futuro vamos a usar el token en el header de las peticiones
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
-
-        // Intentamos parsear la respuesta como JSON, incluso si hay error
-        const data = await response.json().catch(() => ({}));
-
-        if (!response.ok) {
-            // Error personalizado enviado desde el backend
-            const mensaje = data.error || data.message || 'Error al iniciar sesión';
-            throw new Error(mensaje);
+        try {
+            await loginUser(email, password);
+        } catch (err) {
+            error = err.message;
+        } finally {
+            loading = false;
         }
-
-        // Éxito: guardar token y redirigir
-        document.cookie = `token=${data.token}; path=/; max-age=86400`;
-        goto('/envios');
-
-    } catch (err) {
-        error = err.message || 'Ocurrió un error inesperado';
-    } finally {
-        loading = false;
     }
-}
-
 </script>
 
 <svelte:head>
@@ -61,7 +38,7 @@
             <p class="text-[color:var(--color-tertiary)] text-sm mb-4">{error}</p>
         {/if}
 
-        <form on:submit|preventDefault={loginUser} class="space-y-4">
+        <form on:submit|preventDefault={handleLogin} class="space-y-4">
             <div>
                 <label for="email" class="block text-sm font-medium">Correo electrónico</label>
                 <input id="email" type="email" bind:value={email} class="w-full px-4 py-2 border rounded-md" required />
