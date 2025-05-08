@@ -12,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,16 +47,16 @@ public class Envio {
     private String comentarioSupervisor;
 
     @Column(name = "fecha_creacion")
-    private LocalDateTime fechaCreacion;
+    private LocalDate fechaCreacion;
 
     @Column(name = "fecha_modificacion")
-    private LocalDateTime fechaModificacion;
+    private LocalDate fechaModificacion;
 
     @Column(name = "fecha_salida")
-    private LocalDateTime fechaSalida;
+    private LocalDate fechaSalida;
 
     @Column(name = "fecha_entrega")
-    private LocalDateTime fechaEntrega;
+    private LocalDate fechaEntrega;
 
     @Enumerated(EnumType.STRING) // Guarda el nombre del enum (Kilo, Libra, etc.)
     @Column(name = "estado", nullable = false)
@@ -120,35 +122,35 @@ public class Envio {
         this.comentarioSupervisor = comentarioSupervisor;
     }
 
-    public LocalDateTime getFechaCreacion() {
+    public LocalDate getFechaCreacion() {
         return this.fechaCreacion;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+    public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public LocalDateTime getFechaModificacion() {
+    public LocalDate getFechaModificacion() {
         return this.fechaModificacion;
     }
 
-    public void setFechaModificacion(LocalDateTime fechaModificacion) {
+    public void setFechaModificacion(LocalDate fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public LocalDateTime getFechaSalida() {
+    public LocalDate getFechaSalida() {
         return this.fechaSalida;
     }
 
-    public void setFechaSalida(LocalDateTime fechaSalida) {
+    public void setFechaSalida(LocalDate fechaSalida) {
         this.fechaSalida = fechaSalida;
     }
 
-    public LocalDateTime getFechaEntrega() {
+    public LocalDate getFechaEntrega() {
         return this.fechaEntrega;
     }
 
-    public void setFechaEntrega(LocalDateTime fechaEntrega) {
+    public void setFechaEntrega(LocalDate fechaEntrega) {
         this.fechaEntrega = fechaEntrega;
     }
 
