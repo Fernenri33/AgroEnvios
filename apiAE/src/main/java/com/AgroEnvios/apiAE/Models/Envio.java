@@ -14,7 +14,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class Envio {
     @Column(name = "fecha_entrega")
     private LocalDate fechaEntrega;
 
-    @Enumerated(EnumType.STRING) // Guarda el nombre del enum (Kilo, Libra, etc.)
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
     private Estado estado;
 
