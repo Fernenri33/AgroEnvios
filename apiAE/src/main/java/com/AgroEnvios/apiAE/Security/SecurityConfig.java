@@ -35,6 +35,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/usuario/{id}").permitAll()
                         .requestMatchers("/api/test/verifica").permitAll()
                         .requestMatchers("/api/getTodosLosEnvios").permitAll()
+                        .requestMatchers("/api/getMisEnvios").permitAll()
+                        .requestMatchers("/api/crearEnvio").permitAll()
+                        .requestMatchers("/api/aceptarEnvio").permitAll()
+                        .requestMatchers("/api/eliminarEnvio").permitAll()
+                        .requestMatchers("/api/crearEnvioVacio").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

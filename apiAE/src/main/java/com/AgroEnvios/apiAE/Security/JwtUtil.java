@@ -1,8 +1,12 @@
 package com.AgroEnvios.apiAE.Security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.AgroEnvios.apiAE.Models.Usuario;
+import com.AgroEnvios.apiAE.Services.UsuarioService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,7 +23,10 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtil {
 
-     @Value("${jwt.secret}")
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Value("${jwt.secret}")
     private String secret;
 
     private Key SECRET_KEY;
@@ -77,6 +84,17 @@ public String generateToken(UserDetails userDetails) {
 
     private boolean isTokenExpired(String token) {
         return extractAllClaims(token).getExpiration().before(new Date());
+    }
+
+    public Usuario getUserFromToken(String token) {
+        String username = extractUsername(token);
+
+        Usuario usuario = usuarioService.getUsuarioByEmail(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        System.out.println("Usuario encontrado: " + usuario.getEmail());
+
+        return usuario;
     }
 
 }

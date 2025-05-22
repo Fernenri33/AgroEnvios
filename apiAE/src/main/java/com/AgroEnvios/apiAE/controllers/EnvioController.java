@@ -29,85 +29,124 @@ public class EnvioController {
     @Autowired
     private EnviosService enviosService;
 
-@GetMapping("/getTodosLosEnvios")
-public ResponseEntity<ApiResponse<List<Envio>>> getAllEnvios(@RequestHeader("Authorization") String authHeader) {
-    String token = authHeader.replace("Bearer ", "");
-
-    if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor") || jwtUtil.hasRole(token, "Proveedor")) {
-        List<Envio> envios = enviosService.getAllEnvios();
-        return ResponseEntity.ok(new ApiResponse<>(envios, "Operacion exitosa"));
-    } else {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ApiResponse<>(null, "No tienes permisos"));
-    }
-}
-
-@PostMapping("/crearEnvio")
-public ResponseEntity<ApiResponse<Envio>> createEnvio(@RequestHeader("Authorization") String authHeader, @RequestBody Envio envio) {
-    String token = authHeader.replace("Bearer ", "");
-
-    if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor")) {
-        Envio createdEnvio = enviosService.createEnvio(envio);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(createdEnvio, "Envio creado exitosamente"));
-    } else {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ApiResponse<>(null, "No tienes permisos"));
-    }
-}
-
-@PostMapping("/editarEnvio")
-public ResponseEntity<ApiResponse<Envio>> editarEnvio(@RequestHeader("Authorization") String authHeader, @RequestBody Envio envio) {
-    String token = authHeader.replace("Bearer ", "");
-
-    if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor")) {
-        Envio editedEnvio = enviosService.updateEnvio(envio);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(editedEnvio, "Envio editado exitosamente"));
-    } else {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ApiResponse<>(null, "No tienes permisos"));
-    }
-}
-
-@PostMapping("/aceptarEnvio")
-public ResponseEntity<ApiResponse<Envio>> revisarEnvio(@RequestHeader("Authorization") String authHeader, @RequestBody Envio envio, @RequestParam String estado) {
-    String token = authHeader.replace("Bearer ", "");
-
-    if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor")) {
-        try {
-            envio.setEstado(Estado.valueOf(estado.toUpperCase())); // Convertir el String al enum
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse<>(null, "Estado no válido"));
+    // Obtener todos los envíos
+    @GetMapping("/getTodosLosEnvios")
+    public ResponseEntity<ApiResponse<List<Envio>>> getAllEnvios(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor") || jwtUtil.hasRole(token, "Proveedor")) {
+            List<Envio> envios = enviosService.getAllEnvios();
+            return ResponseEntity.ok(new ApiResponse<>(envios, "Operacion exitosa"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos"));
         }
-
-        Envio updatedEnvio = enviosService.updateEnvio(envio);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(updatedEnvio, "Envio editado exitosamente"));
-    } else {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ApiResponse<>(null, "No tienes permisos"));
     }
-}
 
-@PostMapping("/eliminarEnvio")
-
-public ResponseEntity<ApiResponse<Envio>> eliminarEnvio(@RequestHeader("Authorization") String authHeader, @RequestBody Envio envio) {
-    String token = authHeader.replace("Bearer ", "");
-
-    if (jwtUtil.hasRole(token, "Admin")) {
-
-        Envio DeleteEnvio = envio;
-        enviosService.deleteEnvio(DeleteEnvio.getId());
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(DeleteEnvio, "Envio eliminado exitosamente"));
-    } else {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ApiResponse<>(null, "No tienes permisos"));
+    // Obtener envíos del usuario autenticado (Proveedor)
+    @GetMapping("/getMisEnvios")
+    public ResponseEntity<ApiResponse<List<Envio>>> getMisEnvios(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor") || jwtUtil.hasRole(token, "Proveedor")) {
+            List<Envio> envios = enviosService.getEnviosByUsuario(jwtUtil.getUserFromToken(token));
+            return ResponseEntity.ok(new ApiResponse<>(envios, "Operacion exitosa"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No eres proveedor"));
+        }
     }
-}
 
+    // Crear un nuevo envío
+    @PostMapping("/crearEnvio")
+    public ResponseEntity<ApiResponse<Envio>> createEnvio(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody Envio envio) {
+        String token = authHeader.replace("Bearer ", "");
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor")) {
+            Envio createdEnvio = enviosService.createEnvio(envio);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(createdEnvio, "Envio creado exitosamente"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos"));
+        }
+    }
+
+        // Crear un nuevo envío
+    @PostMapping("/crearEnvioVacio")
+    public ResponseEntity<ApiResponse<Envio>> createEnvioVacio(
+            @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor")) {
+            
+            Envio envio = new Envio();
+            envio.setProveedor(jwtUtil.getUserFromToken(token));
+            envio.setEstado(Estado.Pendiente);
+            envio.setFechaCreacion(java.time.LocalDate.now());
+            envio.setComentarioProveedor("Sin comentario");
+            envio.setComentarioSupervisor("Sin comentario");
+            enviosService.createEnvio(envio);
+            
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(envio, "Envio creado exitosamente"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos"));
+        }
+    }
+
+    // Editar un envío existente
+    @PostMapping("/editarEnvio")
+    public ResponseEntity<ApiResponse<Envio>> editarEnvio(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody Envio envio) {
+        String token = authHeader.replace("Bearer ", "");
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor")) {
+            Envio editedEnvio = enviosService.updateEnvio(envio);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(editedEnvio, "Envio editado exitosamente"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos"));
+        }
+    }
+
+    // Cambiar el estado de un envío (aceptar/rechazar)
+    @PostMapping("/aceptarEnvio")
+    public ResponseEntity<ApiResponse<Envio>> revisarEnvio(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody Envio envio,
+            @RequestParam String estado) {
+        String token = authHeader.replace("Bearer ", "");
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor")) {
+            try {
+                envio.setEstado(Estado.valueOf(estado.toUpperCase())); // Convertir el String al enum
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ApiResponse<>(null, "Estado no válido"));
+            }
+            Envio updatedEnvio = enviosService.updateEnvio(envio);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(updatedEnvio, "Envio editado exitosamente"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos"));
+        }
+    }
+
+    // Eliminar un envío
+    @PostMapping("/eliminarEnvio")
+    public ResponseEntity<ApiResponse<Envio>> eliminarEnvio(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody Envio envio) {
+        String token = authHeader.replace("Bearer ", "");
+        if (jwtUtil.hasRole(token, "Admin")) {
+            Envio DeleteEnvio = envio;
+            enviosService.deleteEnvio(DeleteEnvio.getId());
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(DeleteEnvio, "Envio eliminado exitosamente"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos"));
+        }
+    }
 }

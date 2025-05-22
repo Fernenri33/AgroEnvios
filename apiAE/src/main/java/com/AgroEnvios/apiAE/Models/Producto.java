@@ -32,7 +32,7 @@ public class Producto {
     @Column(name = "descripcion")
     private String descripcion; // Descripción del producto
     
-    @Enumerated(EnumType.STRING) // Guarda el nombre del enum (Kilo, Libra, etc.)
+    @Enumerated(EnumType.STRING)
     @Column(name = "unidad_medida", nullable = false)
     private Unidad unidadMedida;
     

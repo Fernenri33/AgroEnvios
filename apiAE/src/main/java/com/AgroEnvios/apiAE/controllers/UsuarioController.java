@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.AgroEnvios.apiAE.Models.Usuario;
+import com.AgroEnvios.apiAE.Services.AuthService;
 import com.AgroEnvios.apiAE.Services.UsuarioService;
 
 import jakarta.validation.constraints.Email;
@@ -28,10 +29,13 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private AuthService authService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest auth) {
         try {
-            String token = usuarioService.login(auth.getEmail(), auth.getPassword());
+            String token = authService.login(auth.getEmail(), auth.getPassword());
             return ResponseEntity.ok(Collections.singletonMap("token", token));
         } catch (BadCredentialsException e) {
             return ResponseEntity
