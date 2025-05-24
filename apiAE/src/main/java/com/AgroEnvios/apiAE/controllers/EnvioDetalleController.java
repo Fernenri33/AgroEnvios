@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.AgroEnvios.apiAE.Models.ApiResponse;
+import com.AgroEnvios.apiAE.Models.Envio;
 import com.AgroEnvios.apiAE.Models.EnvioDetalle;
+import com.AgroEnvios.apiAE.Models.Producto;
 import com.AgroEnvios.apiAE.Security.JwtUtil;
 import com.AgroEnvios.apiAE.Services.EnvioDetalleService;
 
@@ -27,7 +30,7 @@ public class EnvioDetalleController {
     @Autowired
     private EnvioDetalleService envioDetalleService;
 
-    @GetMapping("/envioDetalle/{idEnvio}")
+    @GetMapping("/getEnvioDetalles/{idEnvio}")
     public ResponseEntity<ApiResponse<List<EnvioDetalle>>> getEnvioDetalles(@RequestHeader("Authorization") String authHeader, @PathVariable Integer idEnvio) {
         String token = authHeader.replace("Bearer ", "");
 
@@ -41,10 +44,27 @@ public class EnvioDetalleController {
     }
 
     @PostMapping("/envioDetalle/crear")
-    public ResponseEntity<ApiResponse<EnvioDetalle>> crearEnvioDetalle(@RequestHeader("Authorization") String authHeader, EnvioDetalle envioDetalle) {
+    public ResponseEntity<ApiResponse<EnvioDetalle>> crearEnvioDetalle(
+        @RequestHeader("Authorization") String authHeader,
+        @RequestParam int productoId,
+        @RequestParam int cantidad,
+        @RequestParam int envioId
+    ) {
         String token = authHeader.replace("Bearer ", "");
 
         if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor")) {
+            // Construir el EnvioDetalle manualmente
+            EnvioDetalle envioDetalle = new EnvioDetalle();
+            envioDetalle.setCantidad(cantidad);
+
+            Producto producto = new Producto();
+            producto.setId(productoId);
+            envioDetalle.setProducto(producto);
+
+            Envio envio = new Envio();
+            envio.setId(envioId);
+            envioDetalle.setEnvio(envio);
+
             envioDetalleService.crearEnvioDetalle(envioDetalle);
             return ResponseEntity.ok(new ApiResponse<>(envioDetalle, "Operacion exitosa"));
         } else {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.AgroEnvios.apiAE.Enums.Unidad;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -42,6 +43,7 @@ public class Producto {
     // Relación con EnvioDetalle
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<EnvioDetalle> envioDetalle = new ArrayList<>();
 
     // Constructor vacío (requerido por JPA)

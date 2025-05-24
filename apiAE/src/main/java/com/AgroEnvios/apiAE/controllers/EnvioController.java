@@ -95,13 +95,20 @@ public class EnvioController {
     }
 
     // Editar un envío existente
-    @PostMapping("/editarEnvio")
+    @PostMapping("/editarEnvioProveedor")
     public ResponseEntity<ApiResponse<Envio>> editarEnvio(
             @RequestHeader("Authorization") String authHeader,
-            @RequestBody Envio envio) {
+            @RequestParam Integer id) {
         String token = authHeader.replace("Bearer ", "");
         if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor")) {
-            Envio editedEnvio = enviosService.updateEnvio(envio);
+            // Buscar el envío existente por id
+            Envio envioExistente = enviosService.getEnvioById(id);
+            if (envioExistente == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>(null, "Envio no encontrado"));
+            }
+
+            Envio editedEnvio = enviosService.updateEnvio(envioExistente);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(editedEnvio, "Envio editado exitosamente"));
         } else {

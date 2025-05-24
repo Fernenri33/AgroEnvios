@@ -1,5 +1,8 @@
 package com.AgroEnvios.apiAE.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +28,7 @@ public class EnvioDetalle {
 
     @ManyToOne
     @JoinColumn(name = "envio", nullable = false) // Relación con Envio
+    @JsonIgnore
     private Envio envio;
 
     @Column(name = "cantidad", nullable = false)

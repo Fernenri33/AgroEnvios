@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.AgroEnvios.apiAE.Enums.Estado;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "envio")
@@ -64,6 +65,7 @@ public class Envio {
     // Relación con EnvioDetalle
     
     @OneToMany(mappedBy = "envio", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<EnvioDetalle> envioDetalle = new ArrayList<>();
 
     // Constructor vacío (requerido por JPA)

@@ -19,6 +19,10 @@ private EnvioRepository envioRepository;
         return envioRepository.findAll();
     }
 
+    public Envio getEnvioById(Integer id) {
+        return envioRepository.findById(id).orElse(null);
+    }
+
     public Envio createEnvio(Envio envio) {
         return envioRepository.save(envio);
     }
