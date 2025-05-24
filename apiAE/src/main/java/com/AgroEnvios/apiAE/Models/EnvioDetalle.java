@@ -1,6 +1,4 @@
 package com.AgroEnvios.apiAE.Models;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;

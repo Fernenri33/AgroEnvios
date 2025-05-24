@@ -57,3 +57,19 @@ export async function crearEnvio(token, envioData = {}) {
     const apiResponse = await response.json();
     return apiResponse.data; // Se espera que retorne el nuevo envío, incluyendo su id
 }
+
+export async function eliminarEnvio(token, envio) {
+    const response = await fetch('http://localhost:8080/api/eliminarEnvio', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(envio)
+    });
+    if (!response.ok) {
+        throw new Error('Error al eliminar el envío');
+    }
+    const apiResponse = await response.json();
+    return apiResponse.data;
+}

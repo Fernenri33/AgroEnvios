@@ -1,8 +1,9 @@
 <script>
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
-    import { fetchProductos, fetchEnvioDetalles, guardarEnvioDetalle, eliminarEnvioDetalle } from '$lib/editarEnvio';
+    import { fetchProductos, fetchEnvioDetalles, guardarEnvioDetalle, eliminarEnvioDetalle, enviarEnvio } from '$lib/editarEnvio';
     import { checkAuthentication } from '$lib/misEnvios';
+    import { goto } from '$app/navigation';
 
     let productos = [];
     let detalles = [];
@@ -60,6 +61,16 @@
             error = err.message;
         }
     }
+
+    async function handleEnviarEnvio() {
+        try {
+            const token = checkAuthentication();
+            await enviarEnvio(token, envioId);
+            goto('/misEnvios');
+        } catch (err) {
+            error = err.message;
+        }
+    }
 </script>
 
 <main class="flex-1 bg-gray-100 p-6 min-h-screen">
@@ -80,7 +91,10 @@
             <label class="block font-semibold mb-1" for="motorista">Motorista</label>
             <input id="motorista" class="w-full border rounded px-3 py-2" name="motorista" />
         </div> -->
-        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+            on:click={handleEnviarEnvio}
+            >
+            
             Enviar
         </button>
 

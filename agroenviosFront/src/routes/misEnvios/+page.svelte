@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { checkAuthentication, fetchEnvios, crearEnvio } from '$lib/misEnvios';
+    import { checkAuthentication, fetchEnvios, crearEnvio, eliminarEnvio } from '$lib/misEnvios';
     import AppMenu from '../../components/appMenu.svelte';
     import { goto } from '$app/navigation';
 
@@ -17,6 +17,19 @@
             error = err.message;
         }
     }
+
+ async function handleEliminarEnvio(envio) {
+    try {
+        const token = checkAuthentication();
+        await eliminarEnvio(token, envio);
+        // Actualiza la lista de envíos después de eliminar
+        const result = await fetchEnvios(token);
+        envios = result.envios;
+        mensaje = result.mensaje;
+    } catch (err) {
+        error = err.message;
+    }
+}
 
     onMount(async () => {
         const token = checkAuthentication(); // Obtén el token desde las cookies
@@ -78,20 +91,24 @@
                                     {envio.estado}
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2 flex gap-2">
-                                    <a
-                                        href={`/editarEnvio/${envio.id}`}
-                                        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
-                                        title="Editar Envío"
-                                    >
-                                        Editar
-                                    </a>
-                                    <button
-                                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
-                                        title="Eliminar Envío"
-                                        on:click={() => {/* Lógica para eliminar */}}
-                                    >
-                                        Eliminar
-                                    </button>
+                                    {#if envio.estado === 'Pendiente'}
+                                        <a
+                                            href={`/editarEnvio/${envio.id}`}
+                                            class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition-opacity duration-300 opacity-100"
+                                            title="Editar Envío"
+                                        >
+                                            Editar
+                                        </a>
+                                        <button
+                                            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-opacity duration-300 opacity-100"
+                                            title="Eliminar Envío"
+                                            on:click={() => handleEliminarEnvio(envio)}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    {:else}
+                                        <span class="text-gray-400 italic opacity-70 select-none">No disponible</span>
+                                    {/if}
                                 </td>
                             </tr>
                         {/each}

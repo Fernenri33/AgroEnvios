@@ -62,3 +62,12 @@ export async function editarEnvio(token, envio) {
      if (!res.ok) throw new Error('Error al editar el envío');
      return await res.json();
 }
+
+export async function enviarEnvio(token, idEnvio) {
+    const res = await fetch(`http://localhost:8080/api/enviarEnvio/${idEnvio}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Error al enviar el envío');
+    return await res.json();
+}

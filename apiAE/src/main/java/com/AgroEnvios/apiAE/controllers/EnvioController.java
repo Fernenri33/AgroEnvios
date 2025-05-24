@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -121,19 +122,40 @@ public class EnvioController {
     @PostMapping("/aceptarEnvio")
     public ResponseEntity<ApiResponse<Envio>> revisarEnvio(
             @RequestHeader("Authorization") String authHeader,
-            @RequestBody Envio envio,
-            @RequestParam String estado) {
+            @RequestBody int envioId) {
         String token = authHeader.replace("Bearer ", "");
         if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor")) {
-            try {
-                envio.setEstado(Estado.valueOf(estado.toUpperCase())); // Convertir el String al enum
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new ApiResponse<>(null, "Estado no válido"));
-            }
-            Envio updatedEnvio = enviosService.updateEnvio(envio);
+           
+            Envio envio = new Envio();
+            envio.setEstado(Estado.Entregado);
+            envio.setSupervisor(jwtUtil.getUserFromToken(token));
+            envio.setFechaEntrega(java.time.LocalDate.now());
+            enviosService.updateEnvio(envio);
+           
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(updatedEnvio, "Envio editado exitosamente"));
+                    .body(new ApiResponse<>(envio, "Envio editado exitosamente"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos"));
+        }
+    }
+
+    @PostMapping("/enviarEnvio/{idEnvio}")
+    public ResponseEntity<ApiResponse<Envio>> enviarEnvio(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable int idEnvio) {
+        String token = authHeader.replace("Bearer ", "");
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor")) {
+           
+            Envio envio = new Envio();
+            envio = enviosService.getEnvioById(idEnvio);
+            envio.setEstado(Estado.Entregado);
+            envio.setSupervisor(jwtUtil.getUserFromToken(token));
+            
+            enviosService.updateEnvio(envio);
+           
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(envio, "Envio editado exitosamente"));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new ApiResponse<>(null, "No tienes permisos"));
