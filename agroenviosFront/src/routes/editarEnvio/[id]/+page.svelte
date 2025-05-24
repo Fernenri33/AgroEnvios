@@ -91,6 +91,10 @@
             <label class="block font-semibold mb-1" for="motorista">Motorista</label>
             <input id="motorista" class="w-full border rounded px-3 py-2" name="motorista" />
         </div> -->
+        <button class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded mr-2"
+            on:click={() => goto('/misEnvios')}>
+            Regresar
+        </button>
         <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
             on:click={handleEnviarEnvio}
             >

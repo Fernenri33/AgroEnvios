@@ -150,8 +150,8 @@ public class EnvioController {
             Envio envio = new Envio();
             envio = enviosService.getEnvioById(idEnvio);
             envio.setEstado(Estado.Entregado);
-            envio.setSupervisor(jwtUtil.getUserFromToken(token));
-            
+            envio.setFechaEntrega(java.time.LocalDate.now());
+            envio.setFechaModificacion(java.time.LocalDate.now());
             enviosService.updateEnvio(envio);
            
             return ResponseEntity.status(HttpStatus.CREATED)
