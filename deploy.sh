@@ -5,7 +5,7 @@ PROJECT_DIR="/opt/miapp/AgroEnvios"
 
 # Rutas específicas
 API_DIR="$PROJECT_DIR/apiAE"
-FRONT_DIR="$PROJECT_DIR/agoenvosFront"
+FRONT_DIR="$PROJECT_DIR/agroenviosFront"
 
 # 1. Navegar a la carpeta del proyecto y hacer pull
 echo "Actualizando repositorio desde Git..."
