@@ -26,7 +26,7 @@ fi
 nohup java -jar target/apiAE-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod > api.log 2>&1 &
 
 # 3. Frontend: compilar y reiniciar con pm2
-echo "🛠 Compilando Frontend Svelte..."
+echo "Compilando Frontend Svelte..."
 cd "$FRONT_DIR"
 npm install
 npm run build
