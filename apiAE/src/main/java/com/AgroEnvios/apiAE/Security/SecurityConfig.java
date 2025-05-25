@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/envioDetalle/eliminar/{idEnvioDetalle}").permitAll()
                         .requestMatchers("/api/enviarEnvio/{idEnvio}").permitAll()
                         .requestMatchers("/api/aceptarEnvio/{idEnvio}").permitAll()
+                        
                         .anyRequest().authenticated()
                 )
                 .build();

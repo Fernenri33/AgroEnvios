@@ -136,32 +136,27 @@ public class EnvioController {
     @PostMapping("/api/aceptarEnvio/{idEnvio}")
     public ResponseEntity<ApiResponse<Envio>> revisarEnvio(
             @RequestHeader("Authorization") String authHeader,
-            @RequestBody AceptarEnvioRequest request) {
+            @PathVariable int idEnvio) {
         String token = authHeader.replace("Bearer ", "");
         if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor")) {
-            Envio envio = enviosService.getEnvioById(request.envioId);
+            Envio envio = enviosService.getEnvioById(idEnvio);
             if (envio == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new ApiResponse<>(null, "Envio no encontrado"));
             }
+
+            // Actualizar el estado del envío a "Aceptado"
             envio.setEstado(Estado.Aceptado);
-            envio.setSupervisor(jwtUtil.getUserFromToken(token));
-            envio.setFechaEntrega(java.time.LocalDate.now());
+            envio.setFechaModificacion(java.time.LocalDate.now());
             enviosService.updateEnvio(envio);
 
-            // Actualizar stock de productos
-            if (request.detalles != null) {
-                for (AceptarEnvioRequest.DetalleRecibido detalle : request.detalles) {
-                    productoService.sumarStock(detalle.productoId, detalle.cantidadRecibida);
-                }
-            }
-
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(envio, "Envio editado exitosamente"));
+                    .body(new ApiResponse<>(envio, "Envio aceptado exitosamente"));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new ApiResponse<>(null, "No tienes permisos"));
         }
+       
     }
 
     @PostMapping("/enviarEnvio/{idEnvio}")
