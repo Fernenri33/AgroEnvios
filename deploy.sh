@@ -32,6 +32,6 @@ npm install
 npm run build
 
 echo "Reiniciando Frontend con PM2..."
-pm2 restart frontAE
+pm2 restart agroenvios-front
 
 echo "Despliegue completado con éxito."
