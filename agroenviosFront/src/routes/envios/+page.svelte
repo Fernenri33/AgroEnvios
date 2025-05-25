@@ -39,7 +39,6 @@
                     <thead>
                         <tr class="bg-gray-100">
                             <th class="border border-gray-300 px-4 py-2 text-left">Envío ID</th>
-                            <th class="border border-gray-300 px-4 py-2 text-left">Supervisor</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Proveedor</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Fecha de creación</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Estado</th>
@@ -47,12 +46,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {#each envios as envio}
+                        {#each envios.filter(envio => envio.estado === 'En_Revision') as envio}
                             <tr class="hover:bg-gray-50">
                                 <td class="border border-gray-300 px-4 py-2">{envio.id}</td>
-                                <td class="border border-gray-300 px-4 py-2">
-                                    {envio.supervisor.nombre} {envio.supervisor.apellido}
-                                </td>
+
                                 <td class="border border-gray-300 px-4 py-2">
                                     {envio.proveedor.nombre} {envio.proveedor.apellido}
                                 </td>
@@ -68,11 +65,11 @@
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2">
                                     <a
-                                        href={`/editarEnvio/${envio.id}`}
+                                        href={`/revisarEnvio/${envio.id}`}
                                         class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
                                         title="Editar Envío"
                                     >
-                                        Editar
+                                        Revisar Envío
                                     </a>
                                 </td>
                             </tr>

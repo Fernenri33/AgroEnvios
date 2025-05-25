@@ -19,6 +19,7 @@ import com.AgroEnvios.apiAE.Models.ApiResponse;
 import com.AgroEnvios.apiAE.Models.Envio;
 import com.AgroEnvios.apiAE.Security.JwtUtil;
 import com.AgroEnvios.apiAE.Services.EnviosService;
+import com.AgroEnvios.apiAE.Services.ProductoService;
 
 @RestController
 @RequestMapping("/api/")
@@ -29,6 +30,9 @@ public class EnvioController {
 
     @Autowired
     private EnviosService enviosService;
+
+    @Autowired
+    private ProductoService productoService;
 
     // Obtener todos los envíos
     @GetMapping("/getTodosLosEnvios")
@@ -118,20 +122,40 @@ public class EnvioController {
         }
     }
 
-    // Cambiar el estado de un envío (aceptar/rechazar)
-    @PostMapping("/aceptarEnvio")
+    // DTO para recibir los detalles del envío con cantidad recibida
+    public static class AceptarEnvioRequest {
+        public int envioId;
+        public List<DetalleRecibido> detalles;
+
+        public static class DetalleRecibido {
+            public int productoId;
+            public int cantidadRecibida;
+        }
+    }
+
+    @PostMapping("/api/aceptarEnvio/{idEnvio}")
     public ResponseEntity<ApiResponse<Envio>> revisarEnvio(
             @RequestHeader("Authorization") String authHeader,
-            @RequestBody int envioId) {
+            @RequestBody AceptarEnvioRequest request) {
         String token = authHeader.replace("Bearer ", "");
         if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor")) {
-           
-            Envio envio = new Envio();
-            envio.setEstado(Estado.Entregado);
+            Envio envio = enviosService.getEnvioById(request.envioId);
+            if (envio == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>(null, "Envio no encontrado"));
+            }
+            envio.setEstado(Estado.Aceptado);
             envio.setSupervisor(jwtUtil.getUserFromToken(token));
             envio.setFechaEntrega(java.time.LocalDate.now());
             enviosService.updateEnvio(envio);
-           
+
+            // Actualizar stock de productos
+            if (request.detalles != null) {
+                for (AceptarEnvioRequest.DetalleRecibido detalle : request.detalles) {
+                    productoService.sumarStock(detalle.productoId, detalle.cantidadRecibida);
+                }
+            }
+
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(envio, "Envio editado exitosamente"));
         } else {

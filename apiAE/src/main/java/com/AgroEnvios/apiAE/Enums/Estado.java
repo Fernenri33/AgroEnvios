@@ -5,7 +5,8 @@ public enum Estado {
     Pendiente("Pendiente"),
     En_Revision("En Revisión"),
     Rechazado("Rechazado"),
-    Entregado("Aprobado");
+    Entregado("Entregado"),
+    Aceptado("Aceptado");
 
     private final String displayName;
 

@@ -35,5 +35,13 @@ public class ProductoService {
     public List<Producto> obtenerTodosLosProductos() {
         return productoRepository.findAll();
     }
+
+    public void sumarStock(Integer id, int cantidad) {
+        Producto producto = obtenerProductoPorId(id);
+        if (producto != null) {
+            producto.setCantidad(producto.getCantidad() + cantidad);
+            actualizarProducto(producto);
+        }
+    }
     
 }

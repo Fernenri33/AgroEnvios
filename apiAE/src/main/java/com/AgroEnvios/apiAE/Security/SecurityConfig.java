@@ -37,7 +37,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/getTodosLosEnvios").permitAll()
                         .requestMatchers("/api/getMisEnvios").permitAll()
                         .requestMatchers("/api/crearEnvio").permitAll()
-                        .requestMatchers("/api/aceptarEnvio").permitAll()
                         .requestMatchers("/api/eliminarEnvio").permitAll()
                         .requestMatchers("/api/crearEnvioVacio").permitAll()
                         .requestMatchers("/api/getTodosLosProductos").permitAll()
@@ -45,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/envioDetalle/crear").permitAll()
                         .requestMatchers("/api/envioDetalle/eliminar/{idEnvioDetalle}").permitAll()
                         .requestMatchers("/api/enviarEnvio/{idEnvio}").permitAll()
+                        .requestMatchers("/api/aceptarEnvio/{idEnvio}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();
