@@ -107,7 +107,7 @@
                                             Eliminar
                                         </button>
                                     {:else}
-                                        <span class="text-gray-400 italic opacity-70 select-none">No disponible</span>
+                                        <span class="text-gray-400 italic opacity-70 select-none">Enviado, no editable</span>
                                     {/if}
                                 </td>
                             </tr>
