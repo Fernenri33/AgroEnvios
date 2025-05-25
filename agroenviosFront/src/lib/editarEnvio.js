@@ -40,7 +40,7 @@ export async function guardarEnvioDetalle(token, envioDetalle) {
 
 // 3. Eliminar un envío detalle
 export async function eliminarEnvioDetalle(token, idEnvioDetalle) {
-    const res = await fetch(`https://agroenvios.xyz/envioDetalle/eliminar/${idEnvioDetalle}`, {
+    const res = await fetch(`https://agroenvios.xyz/api/envioDetalle/eliminar/${idEnvioDetalle}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
     });
