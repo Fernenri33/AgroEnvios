@@ -122,21 +122,13 @@ public class EnvioController {
         }
     }
 
-    // DTO para recibir los detalles del envío con cantidad recibida
-    public static class AceptarEnvioRequest {
-        public int envioId;
-        public List<DetalleRecibido> detalles;
-
-        public static class DetalleRecibido {
-            public int productoId;
-            public int cantidadRecibida;
-        }
-    }
-
     @PostMapping("/api/aceptarEnvio/{idEnvio}")
     public ResponseEntity<ApiResponse<Envio>> revisarEnvio(
             @RequestHeader("Authorization") String authHeader,
             @PathVariable int idEnvio) {
+
+        System.out.println("ID Envio: " + idEnvio);
+            
         String token = authHeader.replace("Bearer ", "");
         if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor")) {
             Envio envio = enviosService.getEnvioById(idEnvio);
