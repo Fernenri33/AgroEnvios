@@ -73,15 +73,15 @@
         }
     }
 
-        async function handleAceptarEnvio() {
-        try {
-            const token = checkAuthentication();
-            await aceptarEnvio(token, envioId);
-            goto('/envios');
-        } catch (err) {
-            error = err.message;
-        }
+async function handleAceptarEnvio() {
+    try {
+        const token = checkAuthentication();
+        await aceptarEnvio(token, envioId);
+        goto('/envios');
+    } catch (err) {
+        error = err.message;
     }
+}
 </script>
 
 <main class="flex-1 bg-gray-100 p-6 min-h-screen">
