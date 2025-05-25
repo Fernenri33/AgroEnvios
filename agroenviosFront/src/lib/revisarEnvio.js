@@ -4,6 +4,6 @@ export async function aceptarEnvio(token, idEnvio) {
         headers: { 'Authorization': `Bearer ${token}` }
         // No body, no Content-Type
     });
-    if (!res.ok) throw new Error('Error al aceptar el envío');
+    if (!res.ok) throw new Error(res.message);
     return await res.json();
 }
