@@ -1,6 +1,6 @@
 // 1. Obtener todos los productos
 export async function fetchProductos(token) {
-    const res = await fetch('http://localhost:8080/api/getTodosLosProductos', {
+    const res = await fetch('https://agroenvios.xyz/api/getTodosLosProductos', {
         headers: { 'Authorization': `Bearer ${token}` }
     });
     if (!res.ok) throw new Error('Error al obtener productos');
@@ -10,7 +10,7 @@ export async function fetchProductos(token) {
 
 // Obtener todos los detalles de un envío
 export async function fetchEnvioDetalles(token, envioId) {
-    const res = await fetch(`http://localhost:8080/api/getEnvioDetalles/${envioId}`, {
+    const res = await fetch(`https://agroenvios.xyz/api/getEnvioDetalles/${envioId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
     });
     if (!res.ok) throw new Error('Error al obtener los detalles');
@@ -26,7 +26,7 @@ export async function guardarEnvioDetalle(token, envioDetalle) {
         envioId: envioDetalle.envioId
     });
 
-    const res = await fetch(`http://localhost:8080/api/envioDetalle/crear?${params.toString()}`, {
+    const res = await fetch(`https://agroenvios.xyz/api/envioDetalle/crear?${params.toString()}`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`
@@ -40,7 +40,7 @@ export async function guardarEnvioDetalle(token, envioDetalle) {
 
 // 3. Eliminar un envío detalle
 export async function eliminarEnvioDetalle(token, idEnvioDetalle) {
-    const res = await fetch(`http://localhost:8080/api/envioDetalle/eliminar/${idEnvioDetalle}`, {
+    const res = await fetch(`https://agroenvios.xyz/envioDetalle/eliminar/${idEnvioDetalle}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -64,7 +64,7 @@ export async function editarEnvio(token, envio) {
 }
 
 export async function enviarEnvio(token, idEnvio) {
-    const res = await fetch(`http://localhost:8080/api/enviarEnvio/${idEnvio}`, {
+    const res = await fetch(`https://agroenvios.xyz/api/enviarEnvio/${idEnvio}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
     });

@@ -5,7 +5,7 @@ export async function loginUser(email, password) {
     let loading = true;
 
     try {
-        const response = await fetch('http://localhost:8080/api/login', {
+        const response = await fetch('https://agroenvios.xyz/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

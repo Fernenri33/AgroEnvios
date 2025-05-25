@@ -21,7 +21,7 @@ export function checkAuthentication() {
 // Función para obtener todos los envíos
 export async function fetchEnvios(token) {
     try {
-        const response = await fetch('http://localhost:8080/api/getTodosLosEnvios', {
+        const response = await fetch('https://agroenvios.xyz/api/getTodosLosEnvios', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`

@@ -21,7 +21,7 @@ export function checkAuthentication() {
 // Función para obtener todos los envíos
 export async function fetchEnvios(token) {
     try {
-        const response = await fetch('http://localhost:8080/api/getMisEnvios', {
+        const response = await fetch('https://agroenvios.xyz/api/getMisEnvios', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -44,7 +44,7 @@ export async function fetchEnvios(token) {
 }
 
 export async function crearEnvio(token, envioData = {}) {
-    const response = await fetch('http://localhost:8080/api/crearEnvioVacio', {
+    const response = await fetch('https://agroenvios.xyz/api/crearEnvioVacio', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export async function crearEnvio(token, envioData = {}) {
 }
 
 export async function eliminarEnvio(token, envio) {
-    const response = await fetch('http://localhost:8080/api/eliminarEnvio', {
+    const response = await fetch('https://agroenvios.xyz/api/eliminarEnvio', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
