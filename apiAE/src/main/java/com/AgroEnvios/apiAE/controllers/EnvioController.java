@@ -122,7 +122,7 @@ public class EnvioController {
         }
     }
 
-    @PostMapping("/api/aceptarEnvio/{idEnvio}")
+    @PostMapping("/aceptarEnvio/{idEnvio}")
     public ResponseEntity<ApiResponse<Envio>> revisarEnvio(
             @RequestHeader("Authorization") String authHeader,
             @PathVariable int idEnvio) {
