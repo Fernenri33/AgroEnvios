@@ -19,7 +19,7 @@ import com.AgroEnvios.apiAE.Models.ApiResponse;
 import com.AgroEnvios.apiAE.Models.Envio;
 import com.AgroEnvios.apiAE.Security.JwtUtil;
 import com.AgroEnvios.apiAE.Services.EnviosService;
-import com.AgroEnvios.apiAE.Services.ProductoService;
+//mport com.AgroEnvios.apiAE.Services.ProductoService;
 
 @RestController
 @RequestMapping("/api/")
@@ -31,8 +31,8 @@ public class EnvioController {
     @Autowired
     private EnviosService enviosService;
 
-    @Autowired
-    private ProductoService productoService;
+    // @Autowired
+    // private ProductoService productoService;
 
     // Obtener todos los envíos
     @GetMapping("/getTodosLosEnvios")

@@ -67,7 +67,7 @@
         try {
             const token = checkAuthentication();
             await rechazarEnvio(token, envioId);
-            goto('/misEnvios');
+            goto('/envios');
         } catch (err) {
             error = err.message;
         }
