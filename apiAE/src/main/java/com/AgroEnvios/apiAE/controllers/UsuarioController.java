@@ -75,6 +75,7 @@ public class UsuarioController {
                 .body(Collections.singletonMap("error", "No tienes permisos de administrador"));
         }
         Usuario usuario = new Usuario();
+        usuario.setPassword("cambiarContraseña");
         Usuario savedUsuario = usuarioService.saveUsuario(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUsuario);
     }
@@ -86,11 +87,19 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuario/{id}")
-    public ResponseEntity<?> getUsuarioById(@PathVariable int id) {
+    public ResponseEntity<?> getUsuarioById(@RequestHeader("Authorization") String authHeader, @PathVariable int id) {
+
+        // Validar token y rol Admin
+        String token = authHeader.replace("Bearer ", "");
+        if (!jwtUtil.hasRole(token, "Admin")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Collections.singletonMap("error", "No tienes permisos de administrador"));
+        }   
         return usuarioService.getUsuarioById(id)
             .map(usuario -> ResponseEntity.ok(usuario))
             .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Usuario()));
     }
+
 }
     
 class AuthRequest {

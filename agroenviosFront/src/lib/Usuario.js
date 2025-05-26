@@ -34,3 +34,20 @@ export async function getTodosLosUsuarios(token) {
     if (!res.ok) throw new Error((await res.json()).error || 'Error al obtener usuarios');
     return await res.json();
 }
+
+export async function getUsuarioPorId(token, id) {
+    const res = await fetch(`https://agroenvios.xyz/api/usuario/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Error al obtener el usuario');
+    }
+
+    return await res.json();
+}

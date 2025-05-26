@@ -3,6 +3,7 @@
     import { checkAuthentication } from '$lib/misEnvios';
     import { onMount } from 'svelte';
     import AppMenu from '../../components/appMenu.svelte';
+    import { goto } from '$app/navigation';
 
     let usuarios = [];
     let error = '';
@@ -18,6 +19,18 @@
             loading = false;
         }
     });
+
+    async function handleAgregarUsuario() {
+
+        try{
+            const token = checkAuthentication();
+            const usuario = await crearUsuarioVacio(token);
+            goto(`/editarUsuario/${usuario.id}`);
+        } catch (e) {
+            error = e.message;
+        }
+    }
+
 </script>
 
 <div class="flex h-screen">
@@ -56,7 +69,7 @@
                                     <td class="border border-gray-300 px-4 py-2">{u.apellido}</td>
                                     <td class="border border-gray-300 px-4 py-2">{u.organizacion?.nombre || '—'}</td>
                                     <td class="border border-gray-300 px-4 py-2">
-                                        <a href={`/editarUsario?id=${u.id}`} class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm mr-2 transition-colors">Editar</a>
+                                        <a href={`/editarUsuario/${u.id}`} class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm mr-2 transition-colors">Editar</a>
                                     </td>
                                 </tr>
                             {/each}
