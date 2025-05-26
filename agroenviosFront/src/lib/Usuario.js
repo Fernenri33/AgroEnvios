@@ -51,3 +51,21 @@ export async function getUsuarioPorId(token, id) {
 
     return await res.json();
 }
+
+export async function actualizarUsuario(id, usuario, token) {
+    const res = await fetch(`https://agroenvios.xyz/api/usuario/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(usuario)
+    });
+
+    if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Error al actualizar el usuario');
+    }
+
+    return await res.json();
+}
