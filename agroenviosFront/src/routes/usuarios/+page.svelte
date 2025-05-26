@@ -1,5 +1,5 @@
 <script>
-    import { getTodosLosUsuarios } from '$lib/Usuario';
+    import { getTodosLosUsuarios, crearUsuarioVacio } from '$lib/Usuario';
     import { checkAuthentication } from '$lib/misEnvios';
     import { onMount } from 'svelte';
     import AppMenu from '../../components/appMenu.svelte';
