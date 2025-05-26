@@ -26,19 +26,22 @@
     <title>Dashboard</title>
 </svelte:head>
 
-<main class="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-gray-900">
-    {#if isAuthenticated}
-        <h1 class="text-3xl font-bold mb-6">
-            {#if usuario}
-                ¡Hola {usuario.nombre}!
-            {:else}
-                ¡Bienvenido al Dashboard!
-            {/if}
-        </h1>
-        <button on:click={logout} class="px-6 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition">
-            Cerrar sesión
-        </button>
-    {:else}
-        <p class="text-lg font-medium text-gray-700">Redirigiendo al inicio de sesión...</p>
-    {/if}
+<main class="flex h-screen">
+    <AppMenu />
+    <div class="flex-1 flex flex-col justify-center items-center bg-gray-100 text-gray-900">
+        {#if isAuthenticated}
+            <h1 class="text-3xl font-bold mb-6">
+                {#if usuario}
+                    ¡Hola {usuario.nombre}!
+                {:else}
+                    ¡Bienvenido al Dashboard!
+                {/if}
+            </h1>
+            <button on:click={logout} class="px-6 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition">
+                Cerrar sesión
+            </button>
+        {:else}
+            <p class="text-lg font-medium text-gray-700">Redirigiendo al inicio de sesión...</p>
+        {/if}
+    </div>
 </main>
