@@ -26,8 +26,6 @@
     <title>Dashboard</title>
 </svelte:head>
 
-<AppMenu />
-
 <main class="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-gray-900">
     {#if isAuthenticated}
         <h1 class="text-3xl font-bold mb-6">
