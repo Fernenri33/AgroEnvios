@@ -1,9 +1,11 @@
 <script>
     import { onMount } from 'svelte';
+    import { page } from '$app/stores';
     import { checkAuthentication } from '$lib/misEnvios';
     import { getUsuarioPorId, actualizarUsuario } from '$lib/Usuario'; // Asegúrate de tener estas funciones
 
-    export let params;
+    $: usuarioId = $page.params.id;
+
     let usuario = {
         nombre: '',
         apellido: '',
@@ -20,7 +22,7 @@
     onMount(async () => {
         try {
             const token = checkAuthentication();
-            const data = await getUsuarioPorId(token, params.id); // Corrige el orden de argumentos
+            const data = await getUsuarioPorId(token, usuarioId); // Corrige el orden de argumentos
             usuario = data;
         } catch (e) {
             error = e.message;
