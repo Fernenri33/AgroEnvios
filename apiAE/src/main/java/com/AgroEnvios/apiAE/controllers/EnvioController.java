@@ -160,7 +160,29 @@ public class EnvioController {
            
             Envio envio = new Envio();
             envio = enviosService.getEnvioById(idEnvio);
-            envio.setEstado(Estado.Entregado);
+            envio.setEstado(Estado.En_Revision);
+            envio.setFechaEntrega(java.time.LocalDate.now());
+            envio.setFechaModificacion(java.time.LocalDate.now());
+            enviosService.updateEnvio(envio);
+           
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(envio, "Envio editado exitosamente"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos"));
+        }
+    }
+
+        @PostMapping("/rechazarEnvio/{idEnvio}")
+    public ResponseEntity<ApiResponse<Envio>> rechazarEnvio(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable int idEnvio) {
+        String token = authHeader.replace("Bearer ", "");
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor")) {
+           
+            Envio envio = new Envio();
+            envio = enviosService.getEnvioById(idEnvio);
+            envio.setEstado(Estado.Rechazado);
             envio.setFechaEntrega(java.time.LocalDate.now());
             envio.setFechaModificacion(java.time.LocalDate.now());
             enviosService.updateEnvio(envio);

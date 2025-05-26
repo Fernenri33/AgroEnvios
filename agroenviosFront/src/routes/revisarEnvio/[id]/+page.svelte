@@ -4,7 +4,7 @@
     import { fetchProductos, fetchEnvioDetalles, guardarEnvioDetalle, eliminarEnvioDetalle, enviarEnvio } from '$lib/editarEnvio';
     import { checkAuthentication } from '$lib/misEnvios';
     import { goto } from '$app/navigation';
-    import { aceptarEnvio } from '$lib/revisarEnvio';
+    import { aceptarEnvio, rechazarEnvio } from '$lib/revisarEnvio';
 
     let productos = [];
     let detalles = [];
@@ -63,10 +63,10 @@
         }
     }
 
-    async function handleEnviarEnvio() {
+    async function handleRechazarEnvio() {
         try {
             const token = checkAuthentication();
-            await enviarEnvio(token, envioId);
+            await rechazarEnvio(token, envioId);
             goto('/misEnvios');
         } catch (err) {
             error = err.message;
@@ -103,7 +103,7 @@ async function handleAceptarEnvio() {
             <input id="motorista" class="w-full border rounded px-3 py-2" name="motorista" />
         </div> -->
         <button class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded mr-2"
-            on:click={() => goto('/misEnvios')}>
+            on:click={() => goto('/envios')}>
             Regresar
         </button>
         <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
@@ -114,7 +114,7 @@ async function handleAceptarEnvio() {
         </button>
 
                 <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-            on:click={handleAceptarEnvio}
+            on:click={handleRechazarEnvio}
             >
             
             Rechazar Envío
