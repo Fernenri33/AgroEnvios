@@ -52,8 +52,8 @@ export async function getUsuarioPorId(token, id) {
     return await res.json();
 }
 
-export async function actualizarUsuario(id, usuario, token) {
-    const res = await fetch(`https://agroenvios.xyz/api/usuario/${id}`, {
+export async function actualizarUsuario(usuario, token) {
+    const res = await fetch(`https://agroenvios.xyz/api/crearUsuario`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`,

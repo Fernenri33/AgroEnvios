@@ -29,10 +29,10 @@
         }
     });
 
-    async function guardarCambios() {
+    async function handleGuardarCambios() {
         try {
             const token = checkAuthentication();
-            await actualizarUsuario(params.id, usuario, token); // El orden aquí está bien
+            await actualizarUsuario(token, usuario);
             mensaje = 'Cambios guardados correctamente.';
             error = '';
         } catch (e) {
@@ -63,7 +63,7 @@
                 <p class="text-green-600 mb-4">{mensaje}</p>
             {/if}
 
-            <form on:submit|preventDefault={guardarCambios} class="space-y-4">
+            <form on:submit|preventDefault={handleGuardarCambios} class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Nombre</label>
