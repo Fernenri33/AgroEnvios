@@ -2,10 +2,9 @@
     import { goto } from '$app/navigation';
 
     let menuItems = [
-        { name: 'Inicio', path: '/' },
-        { name: 'Envíos', path: '/envios' },
-        { name: 'Dashboard', path: '/dashboard' },
-        { name: 'Cerrar sesión', path: '/logout' }
+        { name: 'Envíos', path: '/envios' }, // Admin y Supervisor
+        { name: 'Mis envíos', path: '/misEnvios' }, // Admin y Proveedor
+        { name: 'Dashboard', path: '/dashboard' }, // Todos
     ];
 
     function navigateTo(path) {

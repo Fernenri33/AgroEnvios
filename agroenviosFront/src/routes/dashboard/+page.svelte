@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { checkAuthentication, logout } from '$lib/dashboard';
     import { getUsuarioActual } from '$lib/Usuario';
+    import AppMenu from '../../components/appMenu.svelte';
 
     let token = '';
     let isAuthenticated = false;
@@ -24,6 +25,8 @@
 <svelte:head>
     <title>Dashboard</title>
 </svelte:head>
+
+<AppMenu />
 
 <main class="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-gray-900">
     {#if isAuthenticated}
