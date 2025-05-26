@@ -27,7 +27,10 @@
     <!-- Contenido principal -->
     <main class="flex-1 bg-gray-100 p-6 overflow-auto">
         <div class="max-w-4xl mx-auto">
-            <h1 class="text-2xl font-bold mb-6 text-gray-800">Lista de Usuarios</h1>
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Lista de Usuarios</h1>
+                <a href="/usuarios/crear" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow transition-colors">Agregar Usuario</a>
+            </div>
 
             {#if loading}
                 <p class="text-gray-600">Cargando usuarios...</p>
@@ -43,6 +46,7 @@
                                 <th class="border border-gray-300 px-4 py-2">Nombre</th>
                                 <th class="border border-gray-300 px-4 py-2">Apellido</th>
                                 <th class="border border-gray-300 px-4 py-2">Organización</th>
+                                <th class="border border-gray-300 px-4 py-2">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,6 +55,9 @@
                                     <td class="border border-gray-300 px-4 py-2">{u.nombre}</td>
                                     <td class="border border-gray-300 px-4 py-2">{u.apellido}</td>
                                     <td class="border border-gray-300 px-4 py-2">{u.organizacion?.nombre || '—'}</td>
+                                    <td class="border border-gray-300 px-4 py-2">
+                                        <a href={`/editarUsario?id=${u.id}`} class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm mr-2 transition-colors">Editar</a>
+                                    </td>
                                 </tr>
                             {/each}
                         </tbody>
