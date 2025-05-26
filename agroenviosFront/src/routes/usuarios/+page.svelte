@@ -42,8 +42,13 @@
         <div class="max-w-4xl mx-auto">
             <div class="flex items-center justify-between mb-6">
                 <h1 class="text-2xl font-bold text-gray-800">Lista de Usuarios</h1>
-                <a href="/usuarios/crear" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow transition-colors">Agregar Usuario</a>
-            </div>
+                <button
+                on:click={handleAgregarUsuario}
+                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow transition-colors"
+                >
+                Agregar Usuario
+            </button>            
+        </div>
 
             {#if loading}
                 <p class="text-gray-600">Cargando usuarios...</p>
