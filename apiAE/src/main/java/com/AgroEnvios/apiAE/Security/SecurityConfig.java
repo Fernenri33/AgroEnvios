@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/aceptarEnvio/{idEnvio}").permitAll()
                         .requestMatchers("/api/rechazarEnvio/{idEnvio}").permitAll()
                         .requestMatchers("/api/crearUsuarioVacio").permitAll()
+                        .requestMatchers("/api/getTodasLasOrganizaciones").permitAll()
                         
                         .anyRequest().authenticated()
                 )
