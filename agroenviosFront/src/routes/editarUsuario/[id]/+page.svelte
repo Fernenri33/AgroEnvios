@@ -20,7 +20,7 @@
     onMount(async () => {
         try {
             const token = checkAuthentication();
-            const data = await getUsuarioPorId(params.id, token); // ← debes tener esta función
+            const data = await getUsuarioPorId(token, params.id); // Corrige el orden de argumentos
             usuario = data;
         } catch (e) {
             error = e.message;
@@ -30,7 +30,7 @@
     async function guardarCambios() {
         try {
             const token = checkAuthentication();
-            await actualizarUsuario(params.id, usuario, token); // ← debes tener esta función
+            await actualizarUsuario(params.id, usuario, token); // El orden aquí está bien
             mensaje = 'Cambios guardados correctamente.';
             error = '';
         } catch (e) {
