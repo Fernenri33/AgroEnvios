@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { checkAuthentication, logout } from '$lib/dashboard';
-    import { getUsuarioPorId } from '$lib/Usuario';
+    import { getUsuarioActual } from '$lib/Usuario';
 
     let token = '';
     let isAuthenticated = false;
@@ -13,13 +13,7 @@
         isAuthenticated = auth.isAuthenticated;
         if (isAuthenticated) {
             try {
-                // Suponiendo que el token es un JWT y contiene el id del usuario
-                // Si tienes el id en otro lado, ajústalo aquí
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                const id = payload.id || payload.userId || payload.sub;
-                if (id) {
-                    usuario = await getUsuarioPorId(token, id);
-                }
+                usuario = await getUsuarioActual(token);
             } catch (e) {
                 usuario = null;
             }

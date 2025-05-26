@@ -100,6 +100,18 @@ public class UsuarioController {
             .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Usuario()));
     }
 
+    @GetMapping("/usuarioActual")
+    public ResponseEntity<?> getUsuarioByToken(@RequestHeader("Authorization") String authHeader) {
+        // Validar token
+        String token = authHeader.replace("Bearer ", "");
+        Usuario usuario = jwtUtil.getUserFromToken(token);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Collections.singletonMap("error", "Token inválido o expirado"));
+        }
+        return ResponseEntity.ok(usuario);
+    }
+
 }
     
 class AuthRequest {

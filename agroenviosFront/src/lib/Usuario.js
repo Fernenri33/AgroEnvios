@@ -69,3 +69,15 @@ export async function actualizarUsuario(usuario, token) {
 
     return await res.json();
 }
+
+export async function getUsuarioActual(token) {
+    const res = await fetch('https://agroenvios.xyz/api/usuarioActual', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (!res.ok) throw new Error((await res.json()).error || 'Error al obtener el usuario actual');
+    return await res.json();
+    
+}
