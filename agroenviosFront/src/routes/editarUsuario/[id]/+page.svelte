@@ -2,7 +2,6 @@
     import { onMount } from 'svelte';
     import { checkAuthentication } from '$lib/misEnvios';
     import { getUsuarioPorId, actualizarUsuario } from '$lib/Usuario'; // Asegúrate de tener estas funciones
-    import AppMenu from '../../components/appMenu.svelte';
 
     export let params;
     let usuario = {
@@ -49,7 +48,6 @@
 
 <div class="flex h-screen">
     <!-- Menú lateral -->
-    <AppMenu />
 
     <!-- Contenido principal -->
     <main class="flex-1 bg-gray-100 p-6 overflow-auto">
