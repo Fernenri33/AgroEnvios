@@ -1,11 +1,51 @@
 <script>
     import { goto } from '$app/navigation';
 
-    let menuItems = [
-        { name: 'Envíos', path: '/envios' }, // Admin y Supervisor
-        { name: 'Mis envíos', path: '/misEnvios' }, // Admin y Proveedor
-        { name: 'Dashboard', path: '/dashboard' }, // todos
-    ];
+    // Función para decodificar el token JWT y extraer el rol
+    function getRoleFromToken(token) {
+        if (!token) return null;
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.rol || payload.role || payload.Rol || payload.Role || null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    // Obtener el token desde localStorage (ajusta si lo guardas en otro lado)
+    let token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    let userRole = getRoleFromToken(token);
+
+    // Menús por rol
+    let menuItems = [];
+    if (userRole === 'admin') {
+        menuItems = [
+            { name: 'Envíos', path: '/envios' },
+            { name: 'Mis envíos', path: '/enviosPendientes' },
+            { name: 'Mis envíos', path: '/misEnvios' },
+            { name: 'Mis envíos', path: '/misEnviosAceptados' },
+            { name: 'Mis envíos', path: '/misEnviosRechazados' },
+            { name: 'Usuarios', path: '/usuarios' },
+            { name: 'Dashboard', path: '/dashboard' }
+        ];
+    } else if (userRole === 'supervisor') {
+        menuItems = [
+            { name: 'Envíos', path: '/envios' },
+            { name: 'Mis envíos', path: '/enviosPendientes' },
+            { name: 'Dashboard', path: '/dashboard' }
+        ];
+    } else if (userRole === 'proveedor') {
+        menuItems = [
+            { name: 'Mis envíos', path: '/misEnvios' },
+            { name: 'Mis envíos', path: '/misEnviosAceptados' },
+            { name: 'Mis envíos', path: '/misEnviosRechazados' },
+            { name: 'Dashboard', path: '/dashboard' }
+        ];
+    } else {
+        menuItems = [
+            { name: 'Dashboard', path: '/dashboard' }
+        ];
+    }
 
     function navigateTo(path) {
         goto(path);
