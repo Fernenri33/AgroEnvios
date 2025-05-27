@@ -18,7 +18,7 @@
 
     // Menús por rol
     let menuItems = [];
-    if (userRole === 'admin') {
+    if (userRole === 'Admin') {
         menuItems = [
             { name: 'Envíos', path: '/envios' },
             { name: 'Mis envíos', path: '/enviosPendientes' },
@@ -28,13 +28,13 @@
             { name: 'Usuarios', path: '/usuarios' },
             { name: 'Dashboard', path: '/dashboard' }
         ];
-    } else if (userRole === 'supervisor') {
+    } else if (userRole === 'Supervisor') {
         menuItems = [
             { name: 'Envíos', path: '/envios' },
             { name: 'Mis envíos', path: '/enviosPendientes' },
             { name: 'Dashboard', path: '/dashboard' }
         ];
-    } else if (userRole === 'proveedor') {
+    } else if (userRole === 'Proveedor') {
         menuItems = [
             { name: 'Mis envíos', path: '/misEnvios' },
             { name: 'Mis envíos', path: '/misEnviosAceptados' },
