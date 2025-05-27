@@ -38,7 +38,7 @@ public class EnvioController {
     @GetMapping("/getTodosLosEnvios")
     public ResponseEntity<ApiResponse<List<Envio>>> getAllEnvios(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
-        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor") || jwtUtil.hasRole(token, "Proveedor")) {
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor")) {
             List<Envio> envios = enviosService.getAllEnvios();
             return ResponseEntity.ok(new ApiResponse<>(envios, "Operacion exitosa"));
         } else {
