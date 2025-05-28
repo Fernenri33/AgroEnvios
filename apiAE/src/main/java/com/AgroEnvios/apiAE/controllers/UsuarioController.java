@@ -114,20 +114,24 @@ public class UsuarioController {
 
         @GetMapping("/getRolUsuario")
         public ResponseEntity<?> getUsuarioRol(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        String rol;
-        if (jwtUtil.hasRole(token, "Admin")) {
-            rol = "Admin";
-        } else if (jwtUtil.hasRole(token, "Cliente")) {
-            rol = "Cliente";
-        } else if (jwtUtil.hasRole(token, "Repartidor")) {
-            rol = "Repartidor";
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(Collections.singletonMap("error", "Rol no autorizado"));
+            String token = authHeader.replace("Bearer ", "");
+            System.out.println("TOKEN: " + token);
+            System.out.println("Admin: " + jwtUtil.hasRole(token, "Admin"));
+            System.out.println("Supervisor: " + jwtUtil.hasRole(token, "Supervisor"));
+            System.out.println("Proveedor: " + jwtUtil.hasRole(token, "Proveedor"));
+            String rol;
+            if (jwtUtil.hasRole(token, "Admin")) {
+                rol = "Admin";
+            } else if (jwtUtil.hasRole(token, "Supervisor")) {
+                rol = "Supervisor";
+            } else if (jwtUtil.hasRole(token, "Proveedor")) {
+                rol = "Proveedor";
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Rol no autorizado"));
+            }
+            return ResponseEntity.ok(Collections.singletonMap("rol", rol));
         }
-        return ResponseEntity.ok(Collections.singletonMap("rol", rol));
-    }
 
 }
     
