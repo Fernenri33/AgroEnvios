@@ -27,7 +27,7 @@
       <div>
         <h3 class="text-md font-semibold font-sans mb-2">Contacto</h3>
         <p class="text-sm font-serif">soporte@agroenvios.com</p>
-        <p class="text-sm font-serif">+52 123 456 7890</p>
+        <p class="text-sm font-serif">+503 1111 1111</p>
       </div>
     </div>
   

@@ -2,6 +2,7 @@
     import Footer from '../components/Footer.svelte';
     import Navbar from '../components/Navbar.svelte';
     import Header from '../components/header.svelte';
+    import Servicios from '../components/Servicios.svelte';
 </script>
 
 <svelte:head>
@@ -16,6 +17,12 @@
 <main>
 
 <Header />
+
+<!-- <Servicios /> -->
+
+<!-- Sobre nosotros -->
+
+<!-- Contáctanos -->
 
 </main>
 
