@@ -24,7 +24,13 @@
         try {
             const token = checkAuthentication();
             productos = await fetchProductos(token);
-            detalles = await fetchEnvioDetalles(token, envioId);
+            let fetchedDetalles = await fetchEnvioDetalles(token, envioId);
+
+            // Inicializa cantidadRecibida si no existe
+            detalles = fetchedDetalles.map(detalle => ({
+                ...detalle,
+                cantidadRecibida: detalle.cantidadRecibida ?? ''
+            }));
         } catch (err) {
             error = err.message;
         } finally {
