@@ -28,9 +28,10 @@
             ];
         } else if (userRole === 'Supervisor') {
             menuItems = [
-                { name: 'Mis envíos', path: '/envios' },
-                { name: 'Mis Envíos pendientes', path: '/enviosPendientes' },
-                { name: 'Mis Envíos rechazados', path: '/enviosRechazados' },
+                { name: 'Envíos pendientes', path: '/envios' },
+                { name: 'Envios sin revisar', path: '/enviosPendientes' },
+                { name: 'Envíos aceptados', path: '/enviosAceptados' },
+                { name: 'Envíos rechazados', path: '/enviosRechazados' },
                 { name: 'Dashboard', path: '/dashboard' }
             ];
         } else if (userRole === 'Proveedor') {
