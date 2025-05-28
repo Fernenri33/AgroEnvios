@@ -72,10 +72,11 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="border border-gray-300 px-4 py-2">{u.nombre}</td>
                                     <td class="border border-gray-300 px-4 py-2">{u.apellido}</td>
-                                    <td class="border border-gray-300 px-4 py-2">{u.organizacion?.nombre || '—'}</td>
-                                    <!-- <td class="border border-gray-300 px-4 py-2">
+                                    <!-- <td class="border border-gray-300 px-4 py-2">{u.organizacion?.nombre || '—'}</td> -->
+                                     <td class="border border-gray-300 px-4 py-2">{u.roles}</td>
+                                    <td class="border border-gray-300 px-4 py-2">
                                         <a href={`/editarUsuario/${u.id}`} class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm mr-2 transition-colors">Editar</a>
-                                    </td> -->
+                                    </td>
                                 </tr>
                             {/each}
                         </tbody>
