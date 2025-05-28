@@ -10,7 +10,8 @@
         try {
             const token = typeof window !== 'undefined' ? getCookie('token') : null;
             if (token) {
-                userRole = await getRol(token);
+                const res = await getRol(token);
+                userRole = res.rol; // Extrae el campo 'rol' del objeto
             }
         } catch (e) {
             userRole = null;
