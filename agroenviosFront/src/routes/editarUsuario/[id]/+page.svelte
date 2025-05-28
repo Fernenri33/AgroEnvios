@@ -52,12 +52,12 @@
             const token = checkAuthentication();
 
             // Construir el array de roles basado en rolId
-            usuario.roles = [];
             if (usuario.rolId) {
-                const rolSeleccionado = rolesDisponibles.find(r => r.id == usuario.rolId);
-                if (rolSeleccionado) {
-                    usuario.roles.push(rolSeleccionado);
-                }
+                usuario.roles = [
+                    { id: usuario.rolId }
+                ];
+            } else {
+                usuario.roles = [];
             }
 
             await actualizarUsuario(usuario, token);
@@ -118,17 +118,30 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700">Rol</label>
-                    <select
-                        bind:value={usuario.rolId}
-                        class="w-full mt-1 px-3 py-2 border rounded"
-                    >
-                        <option value="" disabled>Selecciona un rol</option>
-                        {#each rolesDisponibles as rol}
-                            <option value={rol.id}>{rol.nombre}</option>
-                        {/each}
+                    <label class="block text-sm font-medium text-gray-700">Rol actual</label>
+                    <select class="w-full mt-1 px-3 py-2 border rounded bg-gray-100" disabled>
+                        <option value="">
+                            {usuario.rolId
+                                ? rolesDisponibles.find(r => r.id == usuario.rolId)?.nombre
+                                : 'Sin rol asignado'}
+                        </option>
                     </select>
                 </div>
+
+                {#if !usuario.rolId}
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700">Asignar rol</label>
+                        <select
+                            bind:value={usuario.rolId}
+                            class="w-full mt-1 px-3 py-2 border rounded"
+                        >
+                            <option value="" disabled>Selecciona un rol</option>
+                            {#each rolesDisponibles as rol}
+                                <option value={rol.id}>{rol.nombre}</option>
+                            {/each}
+                        </select>
+                    </div>
+                {/if}
 
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700">Contraseña (dejar vacío para no cambiar)</label>
