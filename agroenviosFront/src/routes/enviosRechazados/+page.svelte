@@ -42,10 +42,11 @@
                             <th class="border border-gray-300 px-4 py-2 text-left">Proveedor</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Fecha de creación</th>
                             <th class="border border-gray-300 px-4 py-2 text-left">Estado</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Acciones</th> <!-- Nueva columna -->
                         </tr>
                     </thead>
                     <tbody>
-                        {#each envios.filter(envio => envio.estado === 'En_Revision') as envio}
+                        {#each envios.filter(envio => envio.estado === 'Rechazado') as envio}
                             <tr class="hover:bg-gray-50">
                                 <td class="border border-gray-300 px-4 py-2">{envio.id}</td>
 
@@ -61,6 +62,15 @@
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2">
                                     {envio.estado}
+                                </td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <a
+                                        href={`/revisarEnvio/${envio.id}`}
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
+                                        title="Editar Envío"
+                                    >
+                                        Revisar Envío
+                                    </a>
                                 </td>
                             </tr>
                         {/each}

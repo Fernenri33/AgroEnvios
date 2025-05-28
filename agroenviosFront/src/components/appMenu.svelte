@@ -18,22 +18,24 @@
         }
         if (userRole === 'Admin') {
             menuItems = [
-                { name: 'Envíos', path: '/envios' },
+                { name: 'Envíos pendientes', path: '/envios' },
                 { name: 'Envios sin revisar', path: '/enviosPendientes' },
                 { name: 'Envíos aceptados', path: '/enviosAceptados' },
+                { name: 'Envíos rechazados', path: '/enviosRechazados' },
                 { name: 'Usuarios', path: '/usuarios' },
+                { name: 'Productos', path: '/productos' },
                 { name: 'Dashboard', path: '/dashboard' }
             ];
         } else if (userRole === 'Supervisor') {
             menuItems = [
                 { name: 'Mis envíos', path: '/envios' },
-                { name: 'Mis Envíos pendientes', path: '/misEnviosPendientes' },
-                { name: 'Mis Envíos rechazados', path: '/misEnviosRechazados' },
+                { name: 'Mis Envíos pendientes', path: '/enviosPendientes' },
+                { name: 'Mis Envíos rechazados', path: '/enviosRechazados' },
                 { name: 'Dashboard', path: '/dashboard' }
             ];
         } else if (userRole === 'Proveedor') {
             menuItems = [
-                { name: 'Envíos', path: '/envios' },
+                { name: 'Envíos', path: '/misEnvios' },
                 { name: 'Envios sin revisar', path: '/enviosPendientes' },
                 { name: 'Envíos aceptados', path: '/enviosAceptados' },
                 { name: 'Dashboard', path: '/dashboard' }

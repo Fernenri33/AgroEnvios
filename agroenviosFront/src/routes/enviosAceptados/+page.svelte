@@ -45,7 +45,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {#each envios.filter(envio => envio.estado === 'En_Revision') as envio}
+                        {#each envios.filter(envio => envio.estado === 'Aceptado') as envio}
                             <tr class="hover:bg-gray-50">
                                 <td class="border border-gray-300 px-4 py-2">{envio.id}</td>
 
