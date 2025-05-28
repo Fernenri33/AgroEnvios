@@ -34,8 +34,8 @@ export async function fetchProductoPorId(token, id) {
 }
 
 export async function actualizarProducto(token, producto) {
-    const res = await fetch(`https://agroenvios.xyz/api/producto/${producto.id}`, {
-        method: 'PUT',
+    const res = await fetch('https://agroenvios.xyz/api/actualizarProducto', {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
