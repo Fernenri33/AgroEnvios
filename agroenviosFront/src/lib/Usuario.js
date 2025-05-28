@@ -75,7 +75,7 @@ export async function getUsuarioPorId(token, id) {
 export async function actualizarUsuario(usuario, token) {
     try {
         const res = await fetch(`https://agroenvios.xyz/api/crearUsuario`, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'

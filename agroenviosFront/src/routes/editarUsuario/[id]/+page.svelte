@@ -32,7 +32,7 @@
     async function handleGuardarCambios() {
         try {
             const token = checkAuthentication();
-            await actualizarUsuario(token, usuario);
+            await actualizarUsuario(usuario, token);
             mensaje = 'Cambios guardados correctamente.';
             error = '';
         } catch (e) {
