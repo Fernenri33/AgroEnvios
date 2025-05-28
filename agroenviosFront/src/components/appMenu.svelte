@@ -1,22 +1,25 @@
 <script>
     import { goto } from '$app/navigation';
 
-    // Función para decodificar el token JWT y extraer el rol
+    // Función para decodificar el token JWT y extraer el rol (soporta string o array, comparación exacta)
     function getRoleFromToken(token) {
         if (!token) return null;
         try {
             const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload.rol || payload.role || payload.Rol || payload.Role || null;
+            let role = payload.rol || payload.role || payload.Rol || payload.Role || null;
+            if (Array.isArray(role)) {
+                // Si es array, toma el primero (ajusta si tu backend envía varios roles)
+                role = role[0];
+            }
+            return role || null;
         } catch (e) {
             return null;
         }
     }
 
-    // Obtener el token desde localStorage (ajusta si lo guardas en otro lado)
     let token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     let userRole = getRoleFromToken(token);
 
-    // Menús por rol
     let menuItems = [];
     if (userRole === 'Admin') {
         menuItems = [
