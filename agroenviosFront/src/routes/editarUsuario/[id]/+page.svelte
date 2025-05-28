@@ -14,6 +14,15 @@
         telefono: '',
         organizacion: { nombre: '' }
     };
+
+        let rolesDisponibles = [
+        { id: 1, nombre: 'Admin' },
+        { id: 2, nombre: 'Supervisor' },
+        { id: 3, nombre: 'Proveedor' }
+    ];
+
+    $: usuario.rolId = usuario.roles && usuario.roles.length > 0 ? usuario.roles[0].id : null;
+
     let error = '';
     let mensaje = '';
     let nuevaPassword = '';
@@ -47,6 +56,10 @@
     //     usuario.password = nuevaPassword; // Asigna la nueva contraseña al usuario
     //     showPassword = true;
     // }
+
+    usuario.roles = [
+        rolesDisponibles.find(r => r.id == usuario.rolId)
+    ];
 </script>
 
 <div class="flex h-screen">
@@ -90,6 +103,19 @@
                         <label class="block text-sm font-medium text-gray-700">Organización</label>
                         <input bind:value={usuario.organizacion.nombre} type="text" class="w-full mt-1 px-3 py-2 border rounded" />
                     </div> -->
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700">Rol</label>
+                    <select
+                        bind:value={usuario.rolId}
+                        class="w-full mt-1 px-3 py-2 border rounded"
+                    >
+                        <option value="" disabled>Selecciona un rol</option>
+                        {#each rolesDisponibles as rol}
+                            <option value={rol.id}>{rol.nombre}</option>
+                        {/each}
+                    </select>
                 </div>
 
                 <div class="md:col-span-2">
