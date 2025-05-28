@@ -7,6 +7,7 @@
     $: usuarioId = $page.params.id;
 
     let usuario = {
+        id: '',
         nombre: '',
         apellido: '',
         direccion: '',
