@@ -33,6 +33,7 @@ public class EnvioController {
     @Autowired
     private EnviosService enviosService;
 
+    @Autowired
     private ProductoService productoService;
 
     // @Autowired
