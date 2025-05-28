@@ -57,9 +57,13 @@
     //     showPassword = true;
     // }
 
-    usuario.roles = [
-        rolesDisponibles.find(r => r.id == usuario.rolId)
-    ];
+    if (usuario.rolId) {
+        usuario.roles = [
+            rolesDisponibles.find(r => r.id == usuario.rolId)
+        ];
+    } else {
+        usuario.roles = [];
+    }
 </script>
 
 <div class="flex h-screen">
