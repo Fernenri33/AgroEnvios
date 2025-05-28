@@ -49,6 +49,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/crearUsuarioVacio").permitAll()
                         .requestMatchers("/api/getTodasLasOrganizaciones").permitAll()
                         .requestMatchers("/api/usuarioActual").permitAll()
+                        .requestMatchers("/api/getRolUsuario").permitAll()
+
                         .requestMatchers("/api/enviarEnvio/{idEnvio}").permitAll()
                         
                         .anyRequest().authenticated()
