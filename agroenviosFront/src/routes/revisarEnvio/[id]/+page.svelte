@@ -76,7 +76,12 @@
 async function handleAceptarEnvio() {
     try {
         const token = checkAuthentication();
-        await aceptarEnvio(token, envioId);
+        // Prepara el array de productos con id y cantidad recibida
+        const productos = detalles.map(detalle => ({
+            idProducto: detalle.producto?.id || detalle.producto, // Ajusta según tu modelo
+            cantidad: Number(detalle.cantidadRecibida) || 0
+        }));
+        await aceptarEnvio(token, envioId, productos);
         goto('/envios');
     } catch (err) {
         error = err.message;
