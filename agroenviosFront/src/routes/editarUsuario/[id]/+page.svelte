@@ -86,10 +86,10 @@
                         <label class="block text-sm font-medium text-gray-700">Dirección</label>
                         <input bind:value={usuario.direccion} type="text" class="w-full mt-1 px-3 py-2 border rounded" />
                     </div>
-                    <div class="md:col-span-2">
+                    <!-- <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700">Organización</label>
                         <input bind:value={usuario.organizacion.nombre} type="text" class="w-full mt-1 px-3 py-2 border rounded" />
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="md:col-span-2">
