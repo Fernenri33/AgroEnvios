@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.AgroEnvios.apiAE.Models.ApiResponse;
@@ -34,6 +35,51 @@ public class ProductoController {
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new ApiResponse<>(null, "No tienes permisos"));
+        }
+    }
+
+    @PostMapping("/crearProducto")
+    public ResponseEntity<ApiResponse<Producto>> crearProducto(@RequestHeader("Authorization") String authHeader, Producto producto) {
+        String token = authHeader.replace("Bearer ", "");
+
+        if (jwtUtil.hasRole(token, "Admin")) {
+            Producto nuevoProducto = productoService.crearProductoVacio();
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(nuevoProducto, "Producto creado exitosamente"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos para crear un producto"));
+        }
+    }
+
+    @PostMapping("/actualizarProducto")
+    public ResponseEntity<ApiResponse<Producto>> actualizarProducto(@RequestHeader("Authorization") String authHeader, Producto producto) {
+        String token = authHeader.replace("Bearer ", "");
+
+        if (jwtUtil.hasRole(token, "Admin")) {
+            productoService.actualizarProducto(producto);
+            return ResponseEntity.ok(new ApiResponse<>(producto, "Producto actualizado exitosamente"));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos para actualizar un producto"));
+        }
+    }
+
+    @GetMapping("/producto/{id}")
+    public ResponseEntity<ApiResponse<Producto>> obtenerProductoPorId(@RequestHeader("Authorization") String authHeader, Integer id) {
+        String token = authHeader.replace("Bearer ", "");
+
+        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Proveedor") || jwtUtil.hasRole(token, "Supervisor")) {
+            Producto producto = productoService.obtenerProductoPorId(id);
+            if (producto != null) {
+                return ResponseEntity.ok(new ApiResponse<>(producto, "Producto encontrado"));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>(null, "Producto no encontrado"));
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(null, "No tienes permisos para ver este producto"));
         }
     }
     

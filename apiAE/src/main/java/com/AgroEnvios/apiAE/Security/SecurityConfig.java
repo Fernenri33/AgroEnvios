@@ -50,6 +50,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/getTodasLasOrganizaciones").permitAll()
                         .requestMatchers("/api/usuarioActual").permitAll()
                         .requestMatchers("/api/getRolUsuario").permitAll()
+                        .requestMatchers("/api/crearProducto").permitAll()
+                        .requestMatchers("/api/actualizarProducto").permitAll()
+                        .requestMatchers("/api/producto/{id}").permitAll()
+
 
                         .requestMatchers("/api/enviarEnvio/{idEnvio}").permitAll()
                         
