@@ -41,12 +41,12 @@
         }
     }
 
-    function generarPassword() {
-        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!';
-        nuevaPassword = Array.from({ length: 12 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-        usuario.password = nuevaPassword; // Asigna la nueva contraseña al usuario
-        showPassword = true;
-    }
+    // function generarPassword() {
+    //     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!';
+    //     nuevaPassword = Array.from({ length: 12 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    //     usuario.password = nuevaPassword; // Asigna la nueva contraseña al usuario
+    //     showPassword = true;
+    // }
 </script>
 
 <div class="flex h-screen">
@@ -111,13 +111,13 @@
                         Guardar Cambios
                     </button>
 
-                    <button
+                    <!-- <button
                         type="button"
                         class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow"
                         on:click={generarPassword}
                     >
                         Cambiar Contraseña
-                    </button>
+                    </button> -->
                 </div>
 
                 {#if showPassword}
