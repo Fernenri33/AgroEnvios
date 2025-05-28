@@ -62,7 +62,6 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(Collections.singletonMap("error", "No tienes permisos de administrador"));
         }
-        usuario.setPassword("cambiarContraseña");
         Usuario savedUsuario = usuarioService.saveUsuario(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUsuario);
     }
