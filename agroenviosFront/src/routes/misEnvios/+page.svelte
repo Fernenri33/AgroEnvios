@@ -18,18 +18,18 @@
         }
     }
 
- async function handleEliminarEnvio(envio) {
-    try {
-        const token = checkAuthentication();
-        await eliminarEnvio(token, envio);
-        // Actualiza la lista de envíos después de eliminar
-        const result = await fetchEnvios(token);
-        envios = result.envios;
-        mensaje = result.mensaje;
-    } catch (err) {
-        error = err.message;
+    async function handleEliminarEnvio(envio) {
+        try {
+            const token = checkAuthentication();
+            await eliminarEnvio(token, envio);
+            // Actualiza la lista de envíos después de eliminar
+            const result = await fetchEnvios(token);
+            envios = result.envios.filter(e => e.estado === 'Pendiente');
+            mensaje = result.mensaje;
+        } catch (err) {
+            error = err.message;
+        }
     }
-}
 
     onMount(async () => {
         const token = checkAuthentication(); // Obtén el token desde las cookies
@@ -37,7 +37,7 @@
 
         try {
             const result = await fetchEnvios(token); // Llama a la función para obtener los envíos
-            envios = result.envios;
+            envios = result.envios.filter(e => e.estado === 'Pendiente');
             mensaje = result.mensaje;
         } catch (err) {
             error = err.message;

@@ -19,7 +19,6 @@
         if (userRole === 'Admin') {
             menuItems = [
                 { name: 'Envíos pendientes', path: '/envios' },
-                { name: 'Envios sin revisar', path: '/envios' },
                 { name: 'Envíos aceptados', path: '/enviosAceptados' },
                 { name: 'Envíos rechazados', path: '/enviosRechazados' },
                 { name: 'Usuarios', path: '/usuarios' },
@@ -29,7 +28,6 @@
         } else if (userRole === 'Supervisor') {
             menuItems = [
                 { name: 'Envíos pendientes', path: '/envios' },
-                { name: 'Envios sin revisar', path: '/envios' },
                 { name: 'Envíos aceptados', path: '/enviosAceptados' },
                 { name: 'Envíos rechazados', path: '/enviosRechazados' },
                 { name: 'Dashboard', path: '/dashboard' }
@@ -37,8 +35,8 @@
         } else if (userRole === 'Proveedor') {
             menuItems = [
                 { name: 'Envíos', path: '/misEnvios' },
-                { name: 'Envios sin revisar', path: '/enviosPendientes' },
-                { name: 'Envíos aceptados', path: '/enviosAceptados' },
+                { name: 'Mis Envíos aceptados', path: '/misEnviosAceptados' },
+                { name: 'Mis Envíos rechazados', path: '/misEnviosRechazados' },
                 { name: 'Dashboard', path: '/dashboard' }
             ];
         } else {
