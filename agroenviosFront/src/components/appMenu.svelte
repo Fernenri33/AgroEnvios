@@ -34,7 +34,8 @@
             ];
         } else if (userRole === 'Proveedor') {
             menuItems = [
-                { name: 'Envíos', path: '/misEnvios' },
+                { name: 'Envíos por enviar', path: '/misEnvios' },
+                { name: 'Envíos en revisión', path: '/misEnviosEnRevision' },
                 { name: 'Mis Envíos aceptados', path: '/misEnviosAceptados' },
                 { name: 'Mis Envíos rechazados', path: '/misEnviosRechazados' },
                 { name: 'Dashboard', path: '/dashboard' }
