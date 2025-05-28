@@ -44,6 +44,7 @@
     function generarPassword() {
         const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!';
         nuevaPassword = Array.from({ length: 12 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+        usuario.password = nuevaPassword; // Asigna la nueva contraseña al usuario
         showPassword = true;
     }
 </script>
@@ -89,6 +90,17 @@
                         <label class="block text-sm font-medium text-gray-700">Organización</label>
                         <input bind:value={usuario.organizacion.nombre} type="text" class="w-full mt-1 px-3 py-2 border rounded" />
                     </div>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700">Contraseña (dejar vacío para no cambiar)</label>
+                    <input
+                        bind:value={usuario.password}
+                        type="password"
+                        class="w-full mt-1 px-3 py-2 border rounded"
+                        autocomplete="new-password"
+                        placeholder="Nueva contraseña (opcional)"
+                    />
                 </div>
 
                 <div class="flex items-center gap-4 pt-4">
