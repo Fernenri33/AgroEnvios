@@ -10,6 +10,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,19 +87,43 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
-    @GetMapping("/usuario/{id}")
-    public ResponseEntity<?> getUsuarioById(@RequestHeader("Authorization") String authHeader, @PathVariable int id) {
-
-        // Validar token y rol Admin
-        String token = authHeader.replace("Bearer ", "");
-        if (!jwtUtil.hasRole(token, "Admin")) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(Collections.singletonMap("error", "No tienes permisos de administrador"));
-        }   
-        return usuarioService.getUsuarioById(id)
-            .map(usuario -> ResponseEntity.ok(usuario))
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Usuario()));
+@PutMapping("/usuario/{id}")
+public ResponseEntity<?> updateUsuario(
+        @RequestHeader("Authorization") String authHeader,
+        @PathVariable int id,
+        @RequestBody Usuario usuario) {
+    // Validar token y rol Admin
+    String token = authHeader.replace("Bearer ", "");
+    if (!jwtUtil.hasRole(token, "Admin")) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body(Collections.singletonMap("error", "No tienes permisos de administrador"));
     }
+
+    // Buscar usuario existente
+    Usuario existente = usuarioService.getUsuarioById(id)
+        .orElse(null);
+
+    if (existente == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(Collections.singletonMap("error", "Usuario no encontrado"));
+    }
+
+    // Actualizar solo los campos básicos (sin roles)
+    existente.setNombre(usuario.getNombre());
+    existente.setApellido(usuario.getApellido());
+    existente.setDireccion(usuario.getDireccion());
+    existente.setTelefono(usuario.getTelefono());
+    existente.setEmail(usuario.getEmail());
+    existente.setOrganizacion(usuario.getOrganizacion());
+
+    // Solo actualiza la contraseña si se envía una nueva
+    if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
+        existente.setPassword((usuario.getPassword()));
+    }
+
+    Usuario actualizado = usuarioService.saveUsuario(existente);
+    return ResponseEntity.ok(actualizado);
+}
 
     @GetMapping("/usuarioActual")
     public ResponseEntity<?> getUsuarioByToken(@RequestHeader("Authorization") String authHeader) {
