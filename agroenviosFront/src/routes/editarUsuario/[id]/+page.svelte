@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
     import { checkAuthentication } from '$lib/misEnvios';
-    import { getUsuarioPorId, actualizarUsuario } from '$lib/Usuario'; // Asegúrate de tener estas funciones
+    import { getUsuarioPorId, actualizarUsuario } from '$lib/Usuario';
 
     $: usuarioId = $page.params.id;
 
@@ -12,16 +12,17 @@
         direccion: '',
         email: '',
         telefono: '',
-        organizacion: { nombre: '' }
+        organizacion: { nombre: '' },
+        roles: [],
+        rolId: '',
+        password: ''
     };
 
-        let rolesDisponibles = [
+    let rolesDisponibles = [
         { id: 1, nombre: 'Admin' },
         { id: 2, nombre: 'Supervisor' },
         { id: 3, nombre: 'Proveedor' }
     ];
-
-    $: usuario.rolId = usuario.roles && usuario.roles.length > 0 ? usuario.roles[0].id : '';
 
     let error = '';
     let mensaje = '';
@@ -31,8 +32,15 @@
     onMount(async () => {
         try {
             const token = checkAuthentication();
-            const data = await getUsuarioPorId(token, usuarioId); // Corrige el orden de argumentos
+            const data = await getUsuarioPorId(token, usuarioId);
             usuario = data;
+
+            // Inicializar rolId si el usuario ya tiene un rol asignado
+            if (usuario.roles && usuario.roles.length > 0) {
+                usuario.rolId = usuario.roles[0].id;
+            } else {
+                usuario.rolId = '';
+            }
         } catch (e) {
             error = e.message;
         }
@@ -41,6 +49,16 @@
     async function handleGuardarCambios() {
         try {
             const token = checkAuthentication();
+
+            // Construir el array de roles basado en rolId
+            usuario.roles = [];
+            if (usuario.rolId) {
+                const rolSeleccionado = rolesDisponibles.find(r => r.id == usuario.rolId);
+                if (rolSeleccionado) {
+                    usuario.roles.push(rolSeleccionado);
+                }
+            }
+
             await actualizarUsuario(usuario, token);
             mensaje = 'Cambios guardados correctamente.';
             error = '';
@@ -50,20 +68,13 @@
         }
     }
 
+    // Función opcional para generar una nueva contraseña
     // function generarPassword() {
     //     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!';
     //     nuevaPassword = Array.from({ length: 12 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-    //     usuario.password = nuevaPassword; // Asigna la nueva contraseña al usuario
+    //     usuario.password = nuevaPassword;
     //     showPassword = true;
     // }
-
-    if (usuario.rolId) {
-        usuario.roles = [
-            rolesDisponibles.find(r => r.id == usuario.rolId)
-        ];
-    } else {
-        usuario.roles = [];
-    }
 </script>
 
 <div class="flex h-screen">
@@ -103,37 +114,20 @@
                         <label class="block text-sm font-medium text-gray-700">Dirección</label>
                         <input bind:value={usuario.direccion} type="text" class="w-full mt-1 px-3 py-2 border rounded" />
                     </div>
-                    <!-- <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700">Organización</label>
-                        <input bind:value={usuario.organizacion.nombre} type="text" class="w-full mt-1 px-3 py-2 border rounded" />
-                    </div> -->
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700">Rol actual</label>
-                    <select class="w-full mt-1 px-3 py-2 border rounded bg-gray-100" disabled>
-                        <option value="">
-                            {usuario.rolId
-                                ? rolesDisponibles.find(r => r.id == usuario.rolId)?.nombre
-                                : 'Sin rol asignado'}
-                        </option>
+                    <label class="block text-sm font-medium text-gray-700">Rol</label>
+                    <select
+                        bind:value={usuario.rolId}
+                        class="w-full mt-1 px-3 py-2 border rounded"
+                    >
+                        <option value="" disabled>Selecciona un rol</option>
+                        {#each rolesDisponibles as rol}
+                            <option value={rol.id}>{rol.nombre}</option>
+                        {/each}
                     </select>
                 </div>
-
-                {#if !usuario.rolId}
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700">Asignar rol</label>
-                        <select
-                            bind:value={usuario.rolId}
-                            class="w-full mt-1 px-3 py-2 border rounded"
-                        >
-                            <option value="" disabled>Selecciona un rol</option>
-                            {#each rolesDisponibles as rol}
-                                <option value={rol.id}>{rol.nombre}</option>
-                            {/each}
-                        </select>
-                    </div>
-                {/if}
 
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700">Contraseña (dejar vacío para no cambiar)</label>
@@ -154,6 +148,7 @@
                         Guardar Cambios
                     </button>
 
+                    <!-- Botón opcional para generar una nueva contraseña -->
                     <!-- <button
                         type="button"
                         class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow"
