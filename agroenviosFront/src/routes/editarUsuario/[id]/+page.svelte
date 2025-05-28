@@ -14,16 +14,8 @@
         email: '',
         telefono: '',
         organizacion: { nombre: '' },
-        roles: [],
-        rolId: '',
         password: ''
     };
-
-    let rolesDisponibles = [
-        { id: 1, nombre: 'Admin' },
-        { id: 2, nombre: 'Supervisor' },
-        { id: 3, nombre: 'Proveedor' }
-    ];
 
     let error = '';
     let mensaje = '';
@@ -35,13 +27,6 @@
             const token = checkAuthentication();
             const data = await getUsuarioPorId(token, usuarioId);
             usuario = data;
-
-            // Inicializar rolId si el usuario ya tiene un rol asignado
-            if (usuario.roles && usuario.roles.length > 0) {
-                usuario.rolId = usuario.roles[0].id;
-            } else {
-                usuario.rolId = '';
-            }
         } catch (e) {
             error = e.message;
         }
@@ -50,16 +35,6 @@
     async function handleGuardarCambios() {
         try {
             const token = checkAuthentication();
-
-            // Construir el array de roles basado en rolId
-            if (usuario.rolId) {
-                usuario.roles = [
-                    { id: usuario.rolId }
-                ];
-            } else {
-                usuario.roles = [];
-            }
-
             await actualizarUsuario(usuario, token);
             mensaje = 'Cambios guardados correctamente.';
             error = '';
@@ -116,32 +91,6 @@
                         <input bind:value={usuario.direccion} type="text" class="w-full mt-1 px-3 py-2 border rounded" />
                     </div>
                 </div>
-
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700">Rol actual</label>
-                    <select class="w-full mt-1 px-3 py-2 border rounded bg-gray-100" disabled>
-                        <option value="">
-                            {usuario.rolId
-                                ? rolesDisponibles.find(r => r.id == usuario.rolId)?.nombre
-                                : 'Sin rol asignado'}
-                        </option>
-                    </select>
-                </div>
-
-                {#if !usuario.rolId}
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700">Asignar rol</label>
-                        <select
-                            bind:value={usuario.rolId}
-                            class="w-full mt-1 px-3 py-2 border rounded"
-                        >
-                            <option value="" disabled>Selecciona un rol</option>
-                            {#each rolesDisponibles as rol}
-                                <option value={rol.id}>{rol.nombre}</option>
-                            {/each}
-                        </select>
-                    </div>
-                {/if}
 
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700">Contraseña (dejar vacío para no cambiar)</label>
