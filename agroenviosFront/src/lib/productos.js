@@ -32,3 +32,19 @@ export async function fetchProductoPorId(token, id) {
     // El producto viene en data.data según tu ApiResponse
     return data.data;
 }
+
+export async function actualizarProducto(token, producto) {
+    const res = await fetch(`https://agroenvios.xyz/api/producto/${producto.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(producto)
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.mensaje || data.message || 'Error al actualizar el producto');
+    }
+    return data.data;
+}
