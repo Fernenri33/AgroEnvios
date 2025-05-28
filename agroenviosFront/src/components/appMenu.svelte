@@ -1,54 +1,50 @@
 <script>
     import { goto } from '$app/navigation';
+    import { getRol } from '$lib/Usuario';
 
-    // Función para decodificar el token JWT y extraer el rol (soporta string o array, comparación exacta)
-    function getRoleFromToken(token) {
-        if (!token) return null;
+    let userRole = null;
+    let menuItems = [];
+
+    async function setMenuByRole() {
         try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            let role = payload.rol || payload.role || payload.Rol || payload.Role || null;
-            if (Array.isArray(role)) {
-                // Si es array, toma el primero (ajusta si tu backend envía varios roles)
-                role = role[0];
+            const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+            if (token) {
+                userRole = await getRol(token);
             }
-            return role || null;
         } catch (e) {
-            return null;
+            userRole = null;
+        }
+        if (userRole === 'Admin') {
+            menuItems = [
+                { name: 'Envíos', path: '/envios' },
+                { name: 'Mis envíos', path: '/enviosPendientes' },
+                { name: 'Mis envíos', path: '/misEnvios' },
+                { name: 'Mis envíos', path: '/misEnviosAceptados' },
+                { name: 'Mis envíos', path: '/misEnviosRechazados' },
+                { name: 'Usuarios', path: '/usuarios' },
+                { name: 'Dashboard', path: '/dashboard' }
+            ];
+        } else if (userRole === 'Supervisor') {
+            menuItems = [
+                { name: 'Envíos', path: '/envios' },
+                { name: 'Mis envíos', path: '/enviosPendientes' },
+                { name: 'Dashboard', path: '/dashboard' }
+            ];
+        } else if (userRole === 'Proveedor') {
+            menuItems = [
+                { name: 'Mis envíos', path: '/misEnvios' },
+                { name: 'Mis envíos', path: '/misEnviosAceptados' },
+                { name: 'Mis envíos', path: '/misEnviosRechazados' },
+                { name: 'Dashboard', path: '/dashboard' }
+            ];
+        } else {
+            menuItems = [
+                { name: 'Dashboard', path: '/dashboard' }
+            ];
         }
     }
 
-    let token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    let userRole = getRoleFromToken(token);
-
-    let menuItems = [];
-    if (userRole === 'Admin') {
-        menuItems = [
-            { name: 'Envíos', path: '/envios' },
-            { name: 'Mis envíos', path: '/enviosPendientes' },
-            { name: 'Mis envíos', path: '/misEnvios' },
-            { name: 'Mis envíos', path: '/misEnviosAceptados' },
-            { name: 'Mis envíos', path: '/misEnviosRechazados' },
-            { name: 'Usuarios', path: '/usuarios' },
-            { name: 'Dashboard', path: '/dashboard' }
-        ];
-    } else if (userRole === 'Supervisor') {
-        menuItems = [
-            { name: 'Envíos', path: '/envios' },
-            { name: 'Mis envíos', path: '/enviosPendientes' },
-            { name: 'Dashboard', path: '/dashboard' }
-        ];
-    } else if (userRole === 'Proveedor') {
-        menuItems = [
-            { name: 'Mis envíos', path: '/misEnvios' },
-            { name: 'Mis envíos', path: '/misEnviosAceptados' },
-            { name: 'Mis envíos', path: '/misEnviosRechazados' },
-            { name: 'Dashboard', path: '/dashboard' }
-        ];
-    } else {
-        menuItems = [
-            { name: 'Dashboard', path: '/dashboard' }
-        ];
-    }
+    setMenuByRole();
 
     function navigateTo(path) {
         goto(path);

@@ -109,4 +109,24 @@ export async function getUsuarioActual(token) {
         window.location.href = '/error';
         throw error;
     }
+
+    
+}
+
+
+export async function getRol(token) {
+    try {
+        const res = await fetch('https://agroenvios.xyz/api/getRolUsuario', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!res.ok) throw new Error((await res.json()).error || 'Error al obtener el usuario rol actual');
+        return await res.json();
+    } catch (error) {
+        window.location.href = '/error';
+        throw error;
+    }
+
 }

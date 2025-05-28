@@ -112,6 +112,23 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
+        @GetMapping("/getRolUsuario")
+        public ResponseEntity<?> getUsuarioRol(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String rol;
+        if (jwtUtil.hasRole(token, "Admin")) {
+            rol = "Admin";
+        } else if (jwtUtil.hasRole(token, "Cliente")) {
+            rol = "Cliente";
+        } else if (jwtUtil.hasRole(token, "Repartidor")) {
+            rol = "Repartidor";
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Collections.singletonMap("error", "Rol no autorizado"));
+        }
+        return ResponseEntity.ok(Collections.singletonMap("rol", rol));
+    }
+
 }
     
 class AuthRequest {
