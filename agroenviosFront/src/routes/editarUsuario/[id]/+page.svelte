@@ -21,7 +21,7 @@
         { id: 3, nombre: 'Proveedor' }
     ];
 
-    $: usuario.rolId = usuario.roles && usuario.roles.length > 0 ? usuario.roles[0].id : null;
+    $: usuario.rolId = usuario.roles && usuario.roles.length > 0 ? usuario.roles[0].id : '';
 
     let error = '';
     let mensaje = '';
@@ -114,6 +114,7 @@
                     <select
                         bind:value={usuario.rolId}
                         class="w-full mt-1 px-3 py-2 border rounded"
+                        disabled={usuario.rolId}
                     >
                         <option value="" disabled>Selecciona un rol</option>
                         {#each rolesDisponibles as rol}
