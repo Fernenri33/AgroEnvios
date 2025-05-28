@@ -1,13 +1,14 @@
 <script>
     import { goto } from '$app/navigation';
     import { getRol } from '$lib/Usuario';
+    import { getCookie } from '$lib/misEnvios';
 
     let userRole = null;
     let menuItems = [];
 
     async function setMenuByRole() {
         try {
-            const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+            const token = typeof window !== 'undefined' ? getCookie('token') : null;
             if (token) {
                 userRole = await getRol(token);
             }
