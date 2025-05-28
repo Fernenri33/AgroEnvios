@@ -40,7 +40,7 @@ public class ProductoService {
         productoRepository.deleteById(id);
     }
 
-    public Producto obtenerProductoPorId(Integer id) {
+    public Producto obtenerProductoPorId(int id) {
         return productoRepository.findById(id).orElse(null);
     }
 
@@ -48,8 +48,8 @@ public class ProductoService {
         return productoRepository.findAll();
     }
 
-    public void sumarStock(Integer id, int cantidad) {
-        Producto producto = obtenerProductoPorId(id);
+    public void sumarStock(int id, int cantidad) {
+        Producto producto = productoRepository.findById(id).orElse(null);
         if (producto != null) {
             producto.setCantidad(producto.getCantidad() + cantidad);
             actualizarProducto(producto);

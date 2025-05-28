@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.AgroEnvios.apiAE.DTO.ProductoCantidadDTO;
 import com.AgroEnvios.apiAE.Enums.Estado;
 import com.AgroEnvios.apiAE.Models.ApiResponse;
 import com.AgroEnvios.apiAE.Models.Envio;
 import com.AgroEnvios.apiAE.Security.JwtUtil;
 import com.AgroEnvios.apiAE.Services.EnviosService;
 //mport com.AgroEnvios.apiAE.Services.ProductoService;
+import com.AgroEnvios.apiAE.Services.ProductoService;
 
 @RestController
 @RequestMapping("/api/")
@@ -30,6 +32,8 @@ public class EnvioController {
 
     @Autowired
     private EnviosService enviosService;
+
+    private ProductoService productoService;
 
     // @Autowired
     // private ProductoService productoService;
@@ -122,37 +126,43 @@ public class EnvioController {
         }
     }
 
-    @PostMapping("/aceptarEnvio/{idEnvio}")
-    public ResponseEntity<ApiResponse<Envio>> revisarEnvio(
-            @RequestHeader("Authorization") String authHeader,
-            @PathVariable int idEnvio) {
+@PostMapping("/aceptarEnvio/{idEnvio}")
+public ResponseEntity<ApiResponse<Envio>> revisarEnvio(
+        @RequestHeader("Authorization") String authHeader,
+        @PathVariable int idEnvio,
+        @RequestBody(required = false) List<ProductoCantidadDTO> productos // Nuevo parámetro
+) {
+    System.out.println("ID Envio: " + idEnvio);
 
-        System.out.println("ID Envio: " + idEnvio);
-            
-        String token = authHeader.replace("Bearer ", "");
-        if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor")) {
-            Envio envio = enviosService.getEnvioById(idEnvio);
-            if (envio == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ApiResponse<>(null, "Envio no encontrado"));
+    String token = authHeader.replace("Bearer ", "");
+    if (jwtUtil.hasRole(token, "Admin") || jwtUtil.hasRole(token, "Supervisor")) {
+        Envio envio = enviosService.getEnvioById(idEnvio);
+        if (envio == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(null, "Envio no encontrado"));
+        }
+
+        // Actualizar el estado del envío a "Aceptado"
+        envio.setEstado(Estado.Aceptado);
+        envio.setFechaModificacion(java.time.LocalDate.now());
+        enviosService.updateEnvio(envio);
+
+            // Nuevo: Actualizar cantidades de productos si se envían
+            if (productos != null) {
+                for (ProductoCantidadDTO pc : productos) {
+                    productoService.sumarStock(pc.getIdProducto(), pc.getCantidad());
+                }
             }
-
-            // Actualizar el estado del envío a "Aceptado"
-            envio.setEstado(Estado.Aceptado);
-            envio.setFechaModificacion(java.time.LocalDate.now());
-            enviosService.updateEnvio(envio);
-
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(envio, "Envio aceptado exitosamente"));
+    
+            return ResponseEntity.ok(new ApiResponse<>(envio, "Envio aceptado exitosamente"));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new ApiResponse<>(null, "No tienes permisos"));
         }
-       
     }
-
-    @PostMapping("/enviarEnvio/{idEnvio}")
-    public ResponseEntity<ApiResponse<Envio>> enviarEnvio(
+    
+        @PostMapping("/enviarEnvio/{idEnvio}")
+        public ResponseEntity<ApiResponse<Envio>> enviarEnvio(
             @RequestHeader("Authorization") String authHeader,
             @PathVariable int idEnvio) {
         String token = authHeader.replace("Bearer ", "");
