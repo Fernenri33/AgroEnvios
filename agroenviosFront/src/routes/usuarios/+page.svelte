@@ -61,6 +61,7 @@
                     <table class="table-auto w-full border-collapse border border-gray-200">
                         <thead>
                             <tr class="bg-gray-100 text-left">
+                            <th class="border border-gray-300 px-4 py-2">id</th>
                                 <th class="border border-gray-300 px-4 py-2">Nombre</th>
                                 <th class="border border-gray-300 px-4 py-2">Apellido</th>
                                 <th class="border border-gray-300 px-4 py-2">Rol</th>
@@ -70,6 +71,7 @@
                         <tbody>
                             {#each usuarios as u}
                                 <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-4 py-2">{u.id}</td>
                                     <td class="border border-gray-300 px-4 py-2">{u.nombre}</td>
                                     <td class="border border-gray-300 px-4 py-2">{u.apellido}</td>
                                     <!-- <td class="border border-gray-300 px-4 py-2">{u.organizacion?.nombre || '—'}</td> -->
